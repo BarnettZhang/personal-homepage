@@ -8,7 +8,6 @@ interface HeroSectionProps {
 
 export default function HeroSection({ name, tagline, description }: HeroSectionProps) {
   const [displayText, setDisplayText] = useState("");
-  const [isTyping, setIsTyping] = useState(true);
   const fullText = tagline;
   const indexRef = useRef(0);
 
@@ -18,50 +17,41 @@ export default function HeroSection({ name, tagline, description }: HeroSectionP
         setDisplayText(fullText.slice(0, indexRef.current + 1));
         indexRef.current++;
       } else {
-        setIsTyping(false);
         clearInterval(timer);
       }
-    }, 80);
+    }, 90);
 
     return () => clearInterval(timer);
   }, [fullText]);
 
   return (
     <div className="relative z-10 flex flex-col items-center justify-center h-screen px-6 text-center pointer-events-none">
-      {/* Gradient glow behind text */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[300px] bg-gradient-radial from-cyan-500/10 via-transparent to-transparent rounded-full blur-3xl" />
+      {/* 柔光装饰 */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[350px] rounded-full blur-3xl opacity-30"
+           style={{ background: "radial-gradient(ellipse, #e8efe4 0%, #f5ede8 40%, transparent 70%)" }} />
 
-      <h1 className="text-5xl md:text-7xl lg:text-8xl font-extrabold tracking-tight mb-6">
-        <span className="gradient-text">{name}</span>
+      <h1 className="text-5xl md:text-7xl lg:text-8xl font-serif font-bold tracking-tight mb-6 text-ink">
+        {name}
       </h1>
 
       <div className="h-10 md:h-12 mb-8">
-        <p className="text-xl md:text-2xl text-gray-300 font-mono">
+        <p className="text-lg md:text-xl text-ink-muted font-sans tracking-wide">
           {displayText}
-          <span
-            className={`inline-block w-0.5 h-6 md:h-7 bg-cyan-400 ml-1 align-middle ${
-              isTyping ? "animate-pulse" : "opacity-0"
-            }`}
-          />
+          <span className="inline-block w-px h-5 md:h-6 bg-sage ml-1.5 align-middle animate-pulse opacity-60" />
         </p>
       </div>
 
-      <p className="text-gray-400 text-base md:text-lg max-w-lg">{description}</p>
+      <p className="text-ink-light/80 text-base md:text-lg max-w-md leading-relaxed">
+        {description}
+      </p>
 
-      {/* Scroll indicator */}
-      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce">
+      {/* 向下滚动提示 */}
+      <div className="absolute bottom-10 left-1/2 -translate-x-1/2">
         <svg
-          className="w-6 h-6 text-gray-500"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
+          className="w-5 h-5 text-ink-muted/40 animate-bounce"
+          fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"
         >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M19 14l-7 7m0 0l-7-7m7 7V3"
-          />
+          <path stroke-linecap="round" stroke-linejoin="round" d="M19 14l-7 7m0 0l-7-7m7 7V3" />
         </svg>
       </div>
     </div>

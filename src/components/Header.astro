@@ -9,60 +9,65 @@ const navItems = [
 const currentPath = Astro.url.pathname;
 ---
 
-<header class="fixed top-0 left-0 right-0 z-50 glass border-t-0 rounded-none">
+<header class="fixed top-0 left-0 right-0 z-50 bg-cream/80 backdrop-blur-md border-b border-border/50">
   <nav class="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
-    <a href="/" class="text-xl font-bold gradient-text">
-      &lt;ZHANG /&gt;
+    <a href="/" class="text-xl font-serif font-bold tracking-wide text-ink hover:text-sage transition-colors">
+      张同学
     </a>
 
-    <!-- Desktop nav -->
+    <!-- Desktop -->
     <ul class="hidden md:flex items-center gap-1">
-      {navItems.map((item) => (
-        <li>
-          <a
-            href={item.href}
-            class={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
-              currentPath === item.href
-                ? "bg-white/10 text-cyan-400"
-                : "text-gray-400 hover:text-white hover:bg-white/5"
-            }`}
-          >
-            {item.label}
-          </a>
-        </li>
-      ))}
+      {navItems.map((item) => {
+        const isActive = currentPath === item.href;
+        return (
+          <li>
+            <a
+              href={item.href}
+              class={`relative px-4 py-2 text-sm font-medium rounded-full transition-all duration-200 ${
+                isActive
+                  ? "text-sage bg-sage-subtle"
+                  : "text-ink-muted hover:text-ink hover:bg-cream-warm"
+              }`}
+            >
+              {item.label}
+            </a>
+          </li>
+        );
+      })}
     </ul>
 
-    <!-- Mobile menu button -->
+    <!-- Mobile -->
     <button
       id="mobile-menu-btn"
-      class="md:hidden p-2 text-gray-400 hover:text-white"
+      class="md:hidden p-2 text-ink-muted hover:text-ink transition-colors"
       aria-label="Toggle menu"
     >
-      <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-              d="M4 6h16M4 12h16M4 18h16" />
+      <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
       </svg>
     </button>
   </nav>
 
   <!-- Mobile menu -->
-  <div id="mobile-menu" class="hidden md:hidden border-t border-white/10">
-    <ul class="px-6 py-4 space-y-2">
-      {navItems.map((item) => (
-        <li>
-          <a
-            href={item.href}
-            class={`block px-4 py-3 rounded-lg text-sm font-medium transition-all ${
-              currentPath === item.href
-                ? "bg-white/10 text-cyan-400"
-                : "text-gray-400 hover:text-white hover:bg-white/5"
-            }`}
-          >
-            {item.label}
-          </a>
-        </li>
-      ))}
+  <div id="mobile-menu" class="hidden md:hidden border-t border-border bg-cream/95 backdrop-blur-md">
+    <ul class="px-6 py-4 space-y-1">
+      {navItems.map((item) => {
+        const isActive = currentPath === item.href;
+        return (
+          <li>
+            <a
+              href={item.href}
+              class={`block px-4 py-3 rounded-xl text-sm font-medium transition-all ${
+                isActive
+                  ? "text-sage bg-sage-subtle"
+                  : "text-ink-muted hover:text-ink hover:bg-cream-warm"
+              }`}
+            >
+              {item.label}
+            </a>
+          </li>
+        );
+      })}
     </ul>
   </div>
 </header>

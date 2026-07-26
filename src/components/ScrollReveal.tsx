@@ -1,15 +1,13 @@
 "use client";
 
 import { useEffect, useRef, type ReactNode } from "react";
-import { cn } from "../utils/cn";
 
 interface ScrollRevealProps {
   children: ReactNode;
   className?: string;
-  direction?: "up" | "down" | "left" | "right";
 }
 
-export default function ScrollReveal({ children, className, direction = "up" }: ScrollRevealProps) {
+export default function ScrollReveal({ children, className }: ScrollRevealProps) {
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -19,34 +17,19 @@ export default function ScrollReveal({ children, className, direction = "up" }: 
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
-          el.classList.add("reveal-visible");
+          el.classList.add("animate-fade-up");
           observer.unobserve(el);
         }
       },
-      { threshold: 0.1, rootMargin: "0px 0px -50px 0px" },
+      { threshold: 0.08, rootMargin: "0px 0px -30px 0px" },
     );
 
     observer.observe(el);
     return () => observer.disconnect();
   }, []);
 
-  const dirClass = {
-    up: "translate-y-8",
-    down: "-translate-y-8",
-    left: "translate-x-8",
-    right: "-translate-x-8",
-  }[direction];
-
   return (
-    <div
-      ref={ref}
-      className={cn(
-        "opacity-0 transition-all duration-700 ease-out",
-        dirClass,
-        "reveal-visible:opacity-100 reveal-visible:translate-y-0 reveal-visible:translate-x-0",
-        className,
-      )}
-    >
+    <div ref={ref} className={className} style={{ opacity: 0 }}>
       {children}
     </div>
   );
