@@ -1,0 +1,76 @@
+---
+const navItems = [
+  { href: "/", label: "首页" },
+  { href: "/projects", label: "项目" },
+  { href: "/about", label: "关于" },
+  { href: "/hobbies", label: "爱好" },
+  { href: "/contact", label: "联系" },
+];
+const currentPath = Astro.url.pathname;
+---
+
+<header class="fixed top-0 left-0 right-0 z-50 glass border-t-0 rounded-none">
+  <nav class="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
+    <a href="/" class="text-xl font-bold gradient-text">
+      &lt;ZHANG /&gt;
+    </a>
+
+    <!-- Desktop nav -->
+    <ul class="hidden md:flex items-center gap-1">
+      {navItems.map((item) => (
+        <li>
+          <a
+            href={item.href}
+            class={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
+              currentPath === item.href
+                ? "bg-white/10 text-cyan-400"
+                : "text-gray-400 hover:text-white hover:bg-white/5"
+            }`}
+          >
+            {item.label}
+          </a>
+        </li>
+      ))}
+    </ul>
+
+    <!-- Mobile menu button -->
+    <button
+      id="mobile-menu-btn"
+      class="md:hidden p-2 text-gray-400 hover:text-white"
+      aria-label="Toggle menu"
+    >
+      <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M4 6h16M4 12h16M4 18h16" />
+      </svg>
+    </button>
+  </nav>
+
+  <!-- Mobile menu -->
+  <div id="mobile-menu" class="hidden md:hidden border-t border-white/10">
+    <ul class="px-6 py-4 space-y-2">
+      {navItems.map((item) => (
+        <li>
+          <a
+            href={item.href}
+            class={`block px-4 py-3 rounded-lg text-sm font-medium transition-all ${
+              currentPath === item.href
+                ? "bg-white/10 text-cyan-400"
+                : "text-gray-400 hover:text-white hover:bg-white/5"
+            }`}
+          >
+            {item.label}
+          </a>
+        </li>
+      ))}
+    </ul>
+  </div>
+</header>
+
+<script>
+  const btn = document.getElementById("mobile-menu-btn");
+  const menu = document.getElementById("mobile-menu");
+  if (btn && menu) {
+    btn.addEventListener("click", () => menu.classList.toggle("hidden"));
+  }
+</script>
