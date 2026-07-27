@@ -1,35 +1,12 @@
 "use client";
 
-interface TimelineItem {
-  year: string;
-  title: string;
-  description: string;
+import type { WorkExperienceItem } from "../data/profile";
+
+interface TimelineProps {
+  items: WorkExperienceItem[];
 }
 
-const timelineData: TimelineItem[] = [
-  {
-    year: "2023 — 至今",
-    title: "高级前端工程师 @ XX科技",
-    description: "负责核心产品前端架构设计，推动组件库和工程化建设。",
-  },
-  {
-    year: "2021 — 2023",
-    title: "前端工程师 @ YY互娱",
-    description: "参与多款 Web 应用开发，深耕 React 生态和性能优化。",
-  },
-  {
-    year: "2017 — 2021",
-    title: "计算机科学 本科",
-    description: "主修计算机科学，自学前端开发，参加多个开源项目。",
-  },
-  {
-    year: "缘起",
-    title: "与代码结缘",
-    description: "初中时用 FrontPage 做了第一个网页，从此对 Web 技术着迷。",
-  },
-];
-
-export default function Timeline() {
+export default function Timeline({ items }: TimelineProps) {
   return (
     <div className="relative">
       {/* 竖线 */}
@@ -37,7 +14,7 @@ export default function Timeline() {
            style={{ background: "linear-gradient(180deg, #c4a595 0%, #a8c0a1 50%, #c8a87c 100%)" }} />
 
       <div className="space-y-10">
-        {timelineData.map((item, index) => (
+        {items.map((item, index) => (
           <div
             key={item.year}
             className={`relative pl-14 md:pl-0 md:w-1/2 ${
@@ -57,6 +34,9 @@ export default function Timeline() {
               <span class="text-xs font-mono text-sage tracking-wide">{item.year}</span>
               <h3 class="text-base font-serif font-semibold text-ink mt-1.5 mb-2">
                 {item.title}
+                {item.company && (
+                  <span class="text-ink-muted font-normal"> @ {item.company}</span>
+                )}
               </h3>
               <p class="text-sm text-ink-light leading-relaxed">{item.description}</p>
             </div>

@@ -1,9 +1,11 @@
 ---
+import { profile } from "../data/profile";
+
 const navItems = [
   { href: "/", label: "首页" },
-  { href: "/projects", label: "项目" },
-  { href: "/about", label: "关于" },
+  { href: "/about", label: "工作" },
   { href: "/hobbies", label: "爱好" },
+  { href: "/travel", label: "旅行" },
   { href: "/contact", label: "联系" },
 ];
 const currentPath = Astro.url.pathname;
@@ -12,7 +14,7 @@ const currentPath = Astro.url.pathname;
 <header class="fixed top-0 left-0 right-0 z-50 bg-cream/80 backdrop-blur-md border-b border-border/50">
   <nav class="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
     <a href="/" class="text-xl font-serif font-bold tracking-wide text-ink hover:text-sage transition-colors">
-      张同学
+      {profile.name}
     </a>
 
     <!-- Desktop -->

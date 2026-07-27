@@ -1,19 +1,12 @@
 "use client";
 
-const skills = [
-  { name: "TypeScript", level: 95 },
-  { name: "React", level: 90 },
-  { name: "Vue", level: 80 },
-  { name: "Three.js", level: 75 },
-  { name: "Node.js", level: 70 },
-  { name: "CSS / Tailwind", level: 92 },
-  { name: "Rust", level: 35 },
-  { name: "Python", level: 60 },
-  { name: "WebGL / GLSL", level: 65 },
-  { name: "Git / DevOps", level: 78 },
-];
+import type { Skill } from "../data/profile";
 
-export default function SkillTree() {
+interface SkillTreeProps {
+  skills: Skill[];
+}
+
+export default function SkillTree({ skills }: SkillTreeProps) {
   return (
     <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
       {skills.map((skill) => (

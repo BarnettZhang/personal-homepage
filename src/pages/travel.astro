@@ -1,0 +1,30 @@
+---
+import Layout from "../layouts/Layout.astro";
+import TravelGrid from "../components/TravelGrid";
+import ScrollReveal from "../components/ScrollReveal";
+import { travelCities } from "../data/profile";
+---
+
+<Layout title="旅行">
+  <!-- 页头 -->
+  <section class="pt-32 pb-12 px-6">
+    <div class="max-w-3xl mx-auto text-center">
+      <ScrollReveal client:load>
+        <p class="text-xs tracking-widest uppercase text-ink-muted mb-4">Travel</p>
+        <h1 class="text-4xl md:text-5xl font-serif font-bold text-ink mb-5">
+          走过的城市
+        </h1>
+        <p class="text-ink-light leading-relaxed max-w-lg mx-auto">
+          用脚步丈量世界，用镜头记录旅程。
+        </p>
+      </ScrollReveal>
+    </div>
+  </section>
+
+  <!-- 城市卡片网格 -->
+  <section class="pb-24 px-6">
+    <div class="max-w-5xl mx-auto">
+      <TravelGrid client:load cities={travelCities} />
+    </div>
+  </section>
+</Layout>
