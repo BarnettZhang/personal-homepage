@@ -267,11 +267,10 @@ function CityMarker({
         />
       </mesh>
 
-      {/* 悬停标签 — Html 自动投射到屏幕空间，始终面向用户 */}
+      {/* 悬停标签 — Html 投射到屏幕空间，固定大小，始终面向用户 */}
       <Html
         position={[position.x * 1.16, position.y * 1.16, position.z * 1.16]}
         center
-        distanceFactor={8}
         occlude={false}
         style={{
           pointerEvents: "none",
@@ -391,8 +390,8 @@ function Scene({
       <OrbitControls
         enableZoom
         enablePan={false}
-        minDistance={3.5}
-        maxDistance={8}
+        minDistance={3.0}
+        maxDistance={6}
         autoRotate={false}
         dampingFactor={0.08}
       />
@@ -420,7 +419,7 @@ export default function EarthGlobe({ cities, onCityClick }: EarthGlobeProps) {
       }}
     >
       <Canvas
-        camera={{ position: [0, 0, 5.5], fov: 40 }}
+        camera={{ position: [0, 0, 5.5], fov: 50 }}
         gl={{ antialias: true, alpha: true }}
         style={{ background: "transparent" }}
       >

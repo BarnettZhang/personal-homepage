@@ -10,7 +10,7 @@ interface TravelGlobeWrapperProps {
 
 export default function TravelGlobeWrapper({ cities }: TravelGlobeWrapperProps) {
   const handleCityClick = useCallback((city: TravelCity) => {
-    window.location.href = `/travel/${encodeURIComponent(city.city)}`;
+    window.location.href = `/travel/${city.slug}`;
   }, []);
 
   return (

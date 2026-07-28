@@ -1,15 +1,15 @@
 ---
 import Layout from "../../layouts/Layout.astro";
-import { travelCities, type TravelCity } from "../../data/profile";
+import { travelCities } from "../../data/profile";
 
 export function getStaticPaths() {
   return travelCities.map((city) => ({
-    params: { city: city.city },
+    params: { slug: city.slug },
   }));
 }
 
-const { city: cityName } = Astro.params;
-const city = travelCities.find((c) => c.city === cityName);
+const { slug } = Astro.params;
+const city = travelCities.find((c) => c.slug === slug);
 
 if (!city) {
   return Astro.redirect("/travel");
@@ -20,7 +20,6 @@ if (!city) {
   <!-- 城市头部 -->
   <section class="pt-32 pb-8 px-6">
     <div class="max-w-4xl mx-auto">
-      <!-- 返回链接 -->
       <a
         href="/travel"
         class="inline-flex items-center gap-2 text-sm text-ink-muted hover:text-sage transition-colors mb-8"
@@ -31,7 +30,6 @@ if (!city) {
         返回旅行地图
       </a>
 
-      <!-- 标题区 -->
       <div class="flex items-center gap-4 mb-6">
         <span class="text-5xl">{city.emoji}</span>
         <div>
@@ -50,42 +48,20 @@ if (!city) {
     </div>
   </section>
 
-  <!-- 照片画廊 -->
-  <section class="pb-12 px-6">
-    <div class="max-w-4xl mx-auto">
-      <h2 class="text-lg font-serif font-semibold text-ink mb-6">
-        📷 旅途瞬间
-      </h2>
-      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        {
-          city.photos.map((photo, i) => (
-            <div class="card overflow-hidden group">
-              <img
-                src={photo}
-                alt={`${city.city} 照片 ${i + 1}`}
-                class="w-full h-56 object-cover transition-transform duration-500 group-hover:scale-105"
-                loading={i < 2 ? "eager" : "lazy"}
-              />
-            </div>
-          ))
-        }
-      </div>
-    </div>
-  </section>
-
-  <!-- 景点介绍 -->
+  <!-- 景点介绍（含照片） -->
   <section class="pb-24 px-6">
     <div class="max-w-4xl mx-auto">
       <div class="section-divider"></div>
       <h2 class="text-lg font-serif font-semibold text-ink mb-6">
         🗺️ 到过的景点
       </h2>
-      <div class="space-y-4">
+      <div class="space-y-8">
         {
           city.attractions.map((attraction) => (
-            <div class="card p-5 flex flex-col gap-2">
+            <div class="card p-5 flex flex-col gap-4">
+              <!-- 景点信息 -->
               <div class="flex items-start gap-3">
-                <div>
+                <div class="flex-1">
                   <h3 class="text-base font-serif font-semibold text-ink flex items-center gap-2">
                     {attraction.name}
                     {attraction.highlight && (
@@ -97,6 +73,32 @@ if (!city) {
                   </p>
                 </div>
               </div>
+
+              <!-- 该景点的照片 -->
+              {
+                attraction.photos.length > 0 && (
+                  <div class={`grid gap-3 ${
+                    attraction.photos.length === 1
+                      ? "grid-cols-1"
+                      : attraction.photos.length === 2
+                      ? "grid-cols-1 sm:grid-cols-2"
+                      : "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3"
+                  }`}>
+                    {
+                      attraction.photos.map((photo, i) => (
+                        <div class="overflow-hidden rounded-lg border border-white/5 group/photo">
+                          <img
+                            src={photo}
+                            alt={`${attraction.name} · ${city.city} 照片 ${i + 1}`}
+                            class="w-full h-48 object-cover transition-transform duration-500 group-hover/photo:scale-105"
+                            loading="lazy"
+                          />
+                        </div>
+                      ))
+                    }
+                  </div>
+                )
+              }
             </div>
           ))
         }
@@ -107,14 +109,14 @@ if (!city) {
   <!-- 底部导航：下一个城市 -->
   {
     (() => {
-      const currentIndex = travelCities.findIndex((c) => c.city === city.city);
+      const currentIndex = travelCities.findIndex((c) => c.slug === city.slug);
       const nextCity = currentIndex < travelCities.length - 1 ? travelCities[currentIndex + 1] : travelCities[0];
       return (
         <section class="pb-24 px-6">
           <div class="max-w-4xl mx-auto text-center">
             <p class="text-xs text-ink-muted mb-3">下一个城市</p>
             <a
-              href={`/travel/${encodeURIComponent(nextCity.city)}`}
+              href={`/travel/${nextCity.slug}`}
               class="inline-flex items-center gap-3 text-ink hover:text-sage transition-colors group"
             >
               <span class="text-2xl">{nextCity.emoji}</span>

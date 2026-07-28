@@ -15,13 +15,13 @@ import { travelCities } from "../data/profile";
           走过的城市
         </h1>
         <p class="text-slate-300 leading-relaxed max-w-lg mx-auto mb-8">
-          用脚步丈量世界，用镜头记录旅程。拖动地球旋转，点击标记查看城市详情。
+          用脚步丈量世界，用镜头记录旅程。
         </p>
       </ScrollReveal>
     </div>
 
     <!-- 3D 地球 -->
-    <div class="max-w-4xl mx-auto h-[520px] md:h-[620px] relative">
+    <div class="max-w-4xl mx-auto h-[580px] md:h-[680px] relative">
       <TravelGlobeWrapper client:load cities={travelCities} />
     </div>
   </section>
@@ -38,7 +38,7 @@ import { travelCities } from "../data/profile";
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
         {travelCities.map((city) => (
           <a
-            href={`/travel/${encodeURIComponent(city.city)}`}
+            href={`/travel/${city.slug}`}
             class="card p-6 group flex flex-col gap-3 no-underline"
           >
             <div class="flex items-center gap-3">
