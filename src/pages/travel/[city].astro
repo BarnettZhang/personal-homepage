@@ -1,0 +1,131 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import { travelCities, type TravelCity } from "../../data/profile";
+
+export function getStaticPaths() {
+  return travelCities.map((city) => ({
+    params: { city: city.city },
+  }));
+}
+
+const { city: cityName } = Astro.params;
+const city = travelCities.find((c) => c.city === cityName);
+
+if (!city) {
+  return Astro.redirect("/travel");
+}
+---
+
+<Layout title={`${city.city} · 旅行`}>
+  <!-- 城市头部 -->
+  <section class="pt-32 pb-8 px-6">
+    <div class="max-w-4xl mx-auto">
+      <!-- 返回链接 -->
+      <a
+        href="/travel"
+        class="inline-flex items-center gap-2 text-sm text-ink-muted hover:text-sage transition-colors mb-8"
+      >
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="15 18 9 12 15 6" />
+        </svg>
+        返回旅行地图
+      </a>
+
+      <!-- 标题区 -->
+      <div class="flex items-center gap-4 mb-6">
+        <span class="text-5xl">{city.emoji}</span>
+        <div>
+          <h1 class="text-3xl md:text-4xl font-serif font-bold text-ink">
+            {city.city}
+          </h1>
+          <p class="text-sm text-ink-muted mt-1">
+            {city.country} · {city.year}
+          </p>
+        </div>
+      </div>
+
+      <p class="text-ink-light leading-relaxed max-w-2xl text-base">
+        {city.description}
+      </p>
+    </div>
+  </section>
+
+  <!-- 照片画廊 -->
+  <section class="pb-12 px-6">
+    <div class="max-w-4xl mx-auto">
+      <h2 class="text-lg font-serif font-semibold text-ink mb-6">
+        📷 旅途瞬间
+      </h2>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        {
+          city.photos.map((photo, i) => (
+            <div class="card overflow-hidden group">
+              <img
+                src={photo}
+                alt={`${city.city} 照片 ${i + 1}`}
+                class="w-full h-56 object-cover transition-transform duration-500 group-hover:scale-105"
+                loading={i < 2 ? "eager" : "lazy"}
+              />
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- 景点介绍 -->
+  <section class="pb-24 px-6">
+    <div class="max-w-4xl mx-auto">
+      <div class="section-divider"></div>
+      <h2 class="text-lg font-serif font-semibold text-ink mb-6">
+        🗺️ 到过的景点
+      </h2>
+      <div class="space-y-4">
+        {
+          city.attractions.map((attraction) => (
+            <div class="card p-5 flex flex-col gap-2">
+              <div class="flex items-start gap-3">
+                <div>
+                  <h3 class="text-base font-serif font-semibold text-ink flex items-center gap-2">
+                    {attraction.name}
+                    {attraction.highlight && (
+                      <span class="tag tag-active text-[10px]">必去</span>
+                    )}
+                  </h3>
+                  <p class="text-sm text-ink-light leading-relaxed mt-1.5">
+                    {attraction.description}
+                  </p>
+                </div>
+              </div>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- 底部导航：下一个城市 -->
+  {
+    (() => {
+      const currentIndex = travelCities.findIndex((c) => c.city === city.city);
+      const nextCity = currentIndex < travelCities.length - 1 ? travelCities[currentIndex + 1] : travelCities[0];
+      return (
+        <section class="pb-24 px-6">
+          <div class="max-w-4xl mx-auto text-center">
+            <p class="text-xs text-ink-muted mb-3">下一个城市</p>
+            <a
+              href={`/travel/${encodeURIComponent(nextCity.city)}`}
+              class="inline-flex items-center gap-3 text-ink hover:text-sage transition-colors group"
+            >
+              <span class="text-2xl">{nextCity.emoji}</span>
+              <span class="text-lg font-serif font-semibold">{nextCity.city}</span>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="transition-transform group-hover:translate-x-1">
+                <polyline points="9 18 15 12 9 6" />
+              </svg>
+            </a>
+          </div>
+        </section>
+      )
+    })()
+  }
+</Layout>
