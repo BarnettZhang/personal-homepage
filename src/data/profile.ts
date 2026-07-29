@@ -3,7 +3,7 @@
 // ============================================================
 
 export const profile = {
-  name: "张子培",
+  name: "ZZP",
   tagline: "B 端平台 & AI 应用前端开发。",
   description:
     "3 年前端开发经验，聚焦 B 端平台与 AI 应用。在这里记录我的项目和思考。",
@@ -106,29 +106,29 @@ export const travelCities: TravelCity[] = [
       "亚得里亚海的明珠，君临城的故事在这里上演。古城墙环绕的老城，橙红色屋顶在阳光下熠熠生辉，每一块石板路都诉说着千年的故事。",
     attractions: [
       {
-        name: "杜布罗夫尼克古城墙",
-        description:
-          "环绕老城的千年石墙，全程约2公里。登上城墙俯瞰橙红色屋顶和湛蓝亚得里亚海，是君临城最经典的视角。",
-        highlight: true,
-        photos: ["/dubrovnik/IMG_2373.jpg", "/dubrovnik/IMG_2426.jpg"],
-      },
-      {
         name: "Lovrijenac 堡垒",
         description:
-          "矗立在37米高海崖上的古老堡垒，是《权力的游戏》红堡的取景地。",
+          "矗立在 37 米高海崖上的古老堡垒，是《权力的游戏》红堡的取景地。穿过拱形石门，内部的石砌庭院与垛口框住一片蔚蓝的亚得里亚海；从外侧回望，整座堡垒像一头灰色的狮子蹲伏在浪花拍打的悬崖之上。",
         highlight: true,
-        photos: ["/dubrovnik/IMG_2398.jpg"],
+        photos: ["/dubrovnik/IMG_2398.jpg", "/dubrovnik/IMG_2414.jpg"],
       },
       {
-        name: "老城主街 Stradun",
-        description: "贯穿老城的大理石主街，三百米长的光滑石板反射着阳光。",
-        photos: ["/dubrovnik/IMG_2424.jpg", "/dubrovnik/IMG_2446.jpg"],
-      },
-      {
-        name: "缆车山顶",
+        name: "杜布罗夫尼克老港",
         description:
-          "从老城北侧坐缆车登上Srd山，整个杜布罗夫尼克和亚得里亚海群岛尽收眼底。",
-        photos: ["/dubrovnik/IMG_2414.jpg"],
+          "黄昏的蓝调时刻，渔船与游艇静静地泊在港湾里，水面像一面深蓝色的镜子。对岸的山坡上，老城房屋的灯火一盏盏亮起，把海岸线缝成一条温暖的金线。",
+        photos: ["/dubrovnik/IMG_2373.jpg"],
+      },
+      {
+        name: "耶稣会阶梯",
+        description:
+          "巴洛克式的宽阔石阶从山顶的耶稣会教堂一直延伸到老城腹地。站在阶梯顶端向下望，两侧是暖黄色的石墙和零星的市集摊位，行人像电影里的剪影一样在石阶上起落。",
+        photos: ["/dubrovnik/IMG_2446.jpg"],
+      },
+      {
+        name: "亚得里亚海日落",
+        description:
+          "太阳沉向海的尽头，天空被染成橙红与紫罗兰的渐变色。远处的海岸线隐没在深绿的松林里，度假屋的轮廓在余晖中变得柔和；有时云层在低空翻涌，像一出无声的戏剧在天幕上谢幕。",
+        photos: ["/dubrovnik/IMG_2424.jpg", "/dubrovnik/IMG_2426.jpg"],
       },
     ],
     photos: [
@@ -141,49 +141,57 @@ export const travelCities: TravelCity[] = [
     ],
   },
   {
-    city: "爱丁堡",
-    slug: "edinburgh",
+    city: "苏格兰",
+    slug: "scotland",
     country: "英国",
     emoji: "🏴",
     year: "2019",
-    lat: 55.9533,
-    lng: -3.1883,
+    lat: 56.0,
+    lng: -3.7,
     description:
-      "卡尔顿山上的希腊风格国家纪念碑，皇家英里大道两旁的中世纪建筑。八月的军乐节和艺穗节让整座城市变成一场狂欢。",
+      "从爱丁堡城堡踞守的死火山岩，到格拉斯哥维多利亚时代的红砖街巷——苏格兰用一种苍凉而粗犷的美，把中世纪的记忆、高地的风、和工业时代的幽默一起装进了这块土地。",
     attractions: [
       {
         name: "爱丁堡城堡",
         description:
-          "坐落在死火山 Castle Rock 之上，是苏格兰最著名的地标。每天下午的「一点钟炮」是延续百年的传统。",
+          "死火山 Castle Rock 的顶端，这座城堡已经守卫了爱丁堡近千年。雾气中的城门上方，金色的狮子纹章与「NEMO ME IMPUNE LACESSIT」的格言熠熠生辉；从王子街远眺，整座城堡像一座灰色的王冠戴在峭壁之上，皇家苏格兰灰龙骑兵团纪念碑的骑马雕像守望着它。",
         highlight: true,
-        photos: ["/edinburgh/IMG_5224.jpg"],
+        photos: ["/scotland/IMG_5282.jpg", "/scotland/IMG_5415.jpg"],
       },
       {
-        name: "卡尔顿山",
-        description: "山顶的希腊风格国家纪念碑让人恍惚间以为来到了雅典。",
-        photos: ["/edinburgh/IMG_5229.jpg", "/edinburgh/IMG_5415.jpg"],
-      },
-      {
-        name: "皇家英里大道",
+        name: "荷里路德修道院",
         description:
-          "连接爱丁堡城堡和荷里路德宫的石板路，两旁是沧桑的中世纪建筑。",
-        photos: ["/edinburgh/IMG_5367.jpg", "/edinburgh/IMG_5272.jpg"],
+          "十二世纪奥古斯丁修道院的遗迹，高耸的哥特式花窗如今只剩下石框，像一幅镂空的画框把天空裁成几何图案。残破的立柱与拱门在潮湿的地面上投下长长的影子，雨滴积成小水洼，倒映着几个世纪的兴衰。",
+        photos: ["/scotland/IMG_5367.jpg"],
       },
       {
-        name: "亚瑟王座",
-        description: "这座3.5亿年前的火山遗迹是爱丁堡最好的徒步路线。",
+        name: "乔治广场",
+        description:
+          "格拉斯哥市中心的心脏，维多利亚女王骑马雕像矗立在高大的花岗岩基座上，背景是红白相间的城市建筑与圣诞装饰。傍晚时分，金色的雪花灯串横跨广场，湿漉漉的地面映着灯火，行人与车辆穿梭其中，是这座城市最热闹的节日景象。",
         highlight: true,
-        photos: ["/edinburgh/IMG_5274.jpg", "/edinburgh/IMG_5282.jpg"],
+        photos: ["/scotland/IMG_5224.jpg", "/scotland/IMG_5274.jpg"],
+      },
+      {
+        name: "格拉斯哥大教堂",
+        description:
+          "苏格兰唯一一座在中世纪宗教改革中幸存下来的大教堂，深灰色的石墙与绿色的铜屋顶在阴天的光线下显得庄严而古老。高耸的尖塔指向低垂的云层，门前行人走过，仿佛时光在这里放慢了脚步。",
+        photos: ["/scotland/IMG_5229.jpg"],
+      },
+      {
+        name: "格拉斯哥现代艺术美术馆",
+        description:
+          "新古典主义柱廊上的金色字母写着「GALLERY OF MODERN ART」，门廊前的威灵顿公爵骑马雕像戴着标志性的橙色交通锥，成为格拉斯哥人幽默精神的象征。圣诞节期间，美术馆旁还立着一棵金色的灯光圣诞树，让庄严的建筑多了一份节日的俏皮。",
+        photos: ["/scotland/IMG_5272.jpg"],
       },
     ],
     photos: [
-      "/edinburgh/IMG_5224.jpg",
-      "/edinburgh/IMG_5229.jpg",
-      "/edinburgh/IMG_5272.jpg",
-      "/edinburgh/IMG_5274.jpg",
-      "/edinburgh/IMG_5282.jpg",
-      "/edinburgh/IMG_5367.jpg",
-      "/edinburgh/IMG_5415.jpg",
+      "/scotland/IMG_5224.jpg",
+      "/scotland/IMG_5229.jpg",
+      "/scotland/IMG_5272.jpg",
+      "/scotland/IMG_5274.jpg",
+      "/scotland/IMG_5282.jpg",
+      "/scotland/IMG_5367.jpg",
+      "/scotland/IMG_5415.jpg",
     ],
   },
   {
@@ -200,38 +208,38 @@ export const travelCities: TravelCity[] = [
       {
         name: "圣索菲亚大教堂",
         description:
-          "一千五百年间从教堂变为清真寺再变为博物馆，查士丁尼大帝的绝世之作。抬头仰望巨大的穹顶，仿佛悬浮在天堂与人间的交界。",
+          "一千五百年间从教堂变为清真寺再变为博物馆，查士丁尼大帝的绝世之作。从苏丹艾哈迈德公园的喷泉前眺望，巨大的穹顶与四座宣礼塔勾勒出伊斯坦布尔最经典的天际线；走进内部，拜占庭黄金马赛克在幽暗中闪烁，基督、圣母与施洗者约翰的肖像跨越千年依然庄严。",
         highlight: true,
-        photos: [
-          "/istanbul/IMG_0703.jpg",
-          "/istanbul/IMG_0709.jpg",
-          "/istanbul/IMG_0761.jpg",
-        ],
+        photos: ["/istanbul/IMG_0709.jpg", "/istanbul/IMG_0719.jpg"],
       },
       {
         name: "蓝色清真寺",
         description:
-          "六座宣礼塔矗立天际，内部两万片伊兹尼克蓝色瓷砖笼罩在神秘光晕中。",
+          "六座宣礼塔矗立天际，层叠的圆顶与高耸的尖塔构成奥斯曼建筑的巅峰。灰白色的石墙与金色塔尖在阴云下显得格外肃穆，庭院里的拱门与喷泉静静迎接着来自世界各地的访客。",
+        photos: ["/istanbul/IMG_0703.jpg"],
+      },
+      {
+        name: "狄奥多西方尖碑",
+        description:
+          "公元前15世纪的古埃及方尖碑，如今矗立在古罗马赛马场的遗址上。灰色的花岗岩上刻满了象形文字，底座浮雕记录着拜占庭帝国的荣耀——时间在这里折叠了三千多年。",
         photos: ["/istanbul/IMG_0700.jpg"],
       },
       {
-        name: "博斯普鲁斯海峡",
+        name: "地下水宫殿",
         description:
-          "乘渡轮从欧洲到亚洲只需二十分钟。两岸的奥斯曼宫殿、拜占庭城墙交替出现。",
+          "查士丁尼大帝建造的地下蓄水池，三百多根科林斯石柱撑起一片幽暗的水世界。暖黄色的灯光从水底泛起，石柱的倒影在平静水面上摇曳，仿佛走入了拜占庭的秘密梦境。",
         photos: ["/istanbul/IMG_0724.jpg"],
       },
       {
-        name: "大巴扎",
+        name: "多尔玛巴赫切宫",
         description:
-          "拥有四千多家店铺的古老市场，迷宫般的走廊里摆满了土耳其地毯、陶瓷和香料。空气中弥漫着红茶和土耳其软糖的香气。",
-        photos: ["/istanbul/IMG_0719.jpg"],
-      },
-      {
-        name: "加拉塔塔",
-        description:
-          "热那亚人留下的石塔是俯瞰金角湾的最佳位置。欧亚两岸尽收眼底。",
+          "奥斯曼帝国晚期的海滨宫殿，巴洛克与新古典主义在博斯普鲁斯海峡畔相遇。华丽的钟楼、镀金的帝国之门与花园中优雅的天鹅喷泉，诉说着一个帝国最后的奢华与浪漫。",
         highlight: true,
-        photos: ["/istanbul/IMG_E0765.jpg", "/istanbul/IMG_E0762.jpg"],
+        photos: [
+          "/istanbul/IMG_0761.jpg",
+          "/istanbul/IMG_E0762.jpg",
+          "/istanbul/IMG_E0765.jpg",
+        ],
       },
     ],
     photos: [
@@ -706,7 +714,7 @@ export const socialLinks: SocialLink[] = [
   },
   {
     platform: "email",
-    url: "mailto:zhangzipei0913@hotmail.com",
+    url: "mailto:zzp@email.com",
     label: "Email",
   },
 ];
