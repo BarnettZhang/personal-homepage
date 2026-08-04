@@ -3,12 +3,55 @@
 import { useState, useRef, useEffect, useCallback } from "react";
 import type { Game } from "../data/profile";
 
-interface GameGalleryProps {
-  games: Game[];
+// ── Steam 数据类型 ─────────────────────────────────────────
+export interface SteamGame {
+  appId: number;
+  name: string;
+  playtimeMinutes: number;
+  playtimeHours: number;
+  lastPlayed: number; // unix timestamp, 0 = never
+  recentPlaytime: number; // 2-week minutes
 }
 
-function posterUrl(appId: string) {
+export interface SteamData {
+  player: { name: string; avatar: string; profileUrl: string };
+  totalGames: number;
+  totalPlaytimeHours: number;
+  games: SteamGame[];
+  featuredAppIds: string[];
+  fetchedAt: string;
+}
+
+interface GameGalleryProps {
+  games: Game[];
+  steamData?: SteamData;
+}
+
+// ── 工具函数 ───────────────────────────────────────────────
+function posterUrl(appId: string | number) {
   return `https://cdn.cloudflare.steamstatic.com/steam/apps/${appId}/library_600x900.jpg`;
+}
+
+function capsuleUrl(appId: string | number) {
+  return `https://cdn.cloudflare.steamstatic.com/steam/apps/${appId}/capsule_616x353.jpg`;
+}
+
+function timeAgo(unixTs: number): string {
+  if (!unixTs) return "";
+  const now = Math.floor(Date.now() / 1000);
+  const diff = now - unixTs;
+  if (diff < 60) return "刚刚";
+  if (diff < 3600) return `${Math.floor(diff / 60)} 分钟前`;
+  if (diff < 86400) return `${Math.floor(diff / 3600)} 小时前`;
+  if (diff < 2592000) return `${Math.floor(diff / 86400)} 天前`;
+  if (diff < 31536000) return `${Math.floor(diff / 2592000)} 个月前`;
+  return `${Math.floor(diff / 31536000)} 年前`;
+}
+
+function playtimeLabel(minutes: number): string {
+  const h = minutes / 60;
+  if (h >= 1) return `${Math.round(h * 10) / 10} 小时`;
+  return `${minutes} 分钟`;
 }
 
 // ============================================================
@@ -389,14 +432,185 @@ function GameCard({ game, index }: { game: Game; index: number }) {
 }
 
 // ============================================================
+//  SteamGameCard — Steam 游戏库卡片（小尺寸）
+// ============================================================
+function SteamGameCard({ game, maxHours }: { game: SteamGame; maxHours: number }) {
+  const [imgError, setImgError] = useState(false);
+
+  return (
+    <a
+      href={`https://store.steampowered.com/app/${game.appId}`}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="group relative overflow-hidden rounded-xl select-none block"
+      style={{ aspectRatio: "2/3" }}
+    >
+      {/* ── 海报 ── */}
+      <img
+        src={imgError ? capsuleUrl(game.appId) : posterUrl(game.appId)}
+        alt={game.name}
+        loading="lazy"
+        onError={() => setImgError(true)}
+        className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+        style={{ backgroundColor: "#1a1a2e" }}
+      />
+
+      {/* ── 渐变遮罩 ── */}
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          background:
+            "linear-gradient(to top, rgba(0,0,0,0.92) 0%, rgba(0,0,0,0.2) 45%, rgba(0,0,0,0.05) 70%, transparent 100%)",
+        }}
+      />
+
+      {/* ── 最近游玩标记 ── */}
+      {game.recentPlaytime > 0 && (
+        <div className="absolute top-3 left-3 z-10">
+          <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-green-500/85 text-white tracking-wide">
+            最近在玩
+          </span>
+        </div>
+      )}
+
+      {/* ── 底部信息 ── */}
+      <div className="absolute inset-x-0 bottom-0 p-3 pointer-events-none z-10">
+        <h4 className="text-white font-bold text-sm leading-tight mb-2 line-clamp-2">
+          {game.name}
+        </h4>
+
+        {/* 时长条 */}
+        <div className="w-full h-1 rounded-full mb-2" style={{ background: "rgba(255,255,255,0.1)" }}>
+          <div
+            className="h-full rounded-full transition-all duration-700"
+            style={{
+              width: `${Math.min((game.playtimeHours / maxHours) * 100, 100)}%`,
+              background: "linear-gradient(90deg, rgba(100,200,255,0.7), rgba(130,180,255,0.9))",
+            }}
+          />
+        </div>
+
+        <div className="flex items-center justify-between">
+          <span className="text-white/65 text-[11px]">
+            {playtimeLabel(game.playtimeMinutes)}
+          </span>
+          {game.lastPlayed > 0 && (
+            <span className="text-white/35 text-[10px]">
+              {timeAgo(game.lastPlayed)}
+            </span>
+          )}
+        </div>
+      </div>
+    </a>
+  );
+}
+
+// ============================================================
+//  SteamLibrary — Steam 游戏库板块
+// ============================================================
+function SteamLibrary({ data: initialData }: { data: SteamData }) {
+  const [data, setData] = useState<SteamData>(initialData);
+  const [refreshing, setRefreshing] = useState(false);
+  const [error, setError] = useState("");
+
+  const maxHours = Math.max(...data.games.map((g) => g.playtimeHours), 1);
+
+  const handleRefresh = async () => {
+    setRefreshing(true);
+    setError("");
+    try {
+      const res = await fetch("/api/refresh-steam");
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      const fresh = await res.json();
+      if (fresh.error) throw new Error(fresh.error);
+      setData(fresh);
+    } catch (e) {
+      setError(String(e));
+    } finally {
+      setRefreshing(false);
+    }
+  };
+
+  return (
+    <div className="mt-24 max-w-5xl mx-auto">
+      {/* ── 头部 ── */}
+      <div className="flex items-center gap-4 mb-10 flex-wrap">
+        <img
+          src={data.player.avatar}
+          alt={data.player.name}
+          className="w-12 h-12 rounded-full ring-2 ring-white/10"
+          loading="lazy"
+        />
+        <div className="flex-1 min-w-0">
+          <h3 className="text-lg font-serif font-bold text-ink leading-snug">
+            {data.player.name} 的 Steam 游戏库
+          </h3>
+          <p className="text-ink-muted text-sm mt-0.5">
+            {data.totalGames} 款游戏 · 总计 {data.totalPlaytimeHours} 小时
+          </p>
+        </div>
+        <a
+          href={data.player.profileUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-xs tracking-wider text-ink-muted hover:text-ink-light transition-colors border border-ink-muted/20 rounded-full px-4 py-2"
+        >
+          Steam 主页 ↗
+        </a>
+        <button
+          onClick={handleRefresh}
+          disabled={refreshing}
+          className="text-xs tracking-wider text-ink-muted hover:text-sage disabled:opacity-50 transition-all border border-ink-muted/20 rounded-full px-4 py-2 flex items-center gap-1.5"
+        >
+          <span
+            className={`inline-block w-3 h-3 rounded-full border transition-colors ${
+              refreshing
+                ? "border-ink-muted/40 border-t-sage animate-spin"
+                : error
+                  ? "border-red-400"
+                  : "border-ink-muted/30"
+            }`}
+          />
+          {refreshing ? "刷新中..." : error ? "重试" : "刷新数据"}
+        </button>
+      </div>
+
+      {/* ── 错误提示 ── */}
+      {error && (
+        <p className="text-xs text-red-400/80 mb-4 -mt-6">刷新失败: {error}</p>
+      )}
+
+      {/* ── 游戏网格 ── */}
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+        {data.games.map((game) => (
+          <SteamGameCard key={game.appId} game={game} maxHours={maxHours} />
+        ))}
+      </div>
+
+      <p className="text-center text-ink-muted/40 text-xs mt-8">
+        数据更新于 {new Date(data.fetchedAt).toLocaleString("zh-CN")} · 游玩时长前 12 款
+      </p>
+    </div>
+  );
+}
+
+// ============================================================
 //  Gallery 容器
 // ============================================================
-export default function GameGallery({ games }: GameGalleryProps) {
+export default function GameGallery({ games, steamData }: GameGalleryProps) {
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 max-w-4xl mx-auto">
-      {games.map((game, i) => (
-        <GameCard key={game.steamAppId} game={game} index={i} />
-      ))}
-    </div>
+    <>
+      {/* ── 精选游戏 ── */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 max-w-4xl mx-auto">
+        {games.map((game, i) => (
+          <GameCard key={game.steamAppId} game={game} index={i} />
+        ))}
+      </div>
+
+      {/* ── Steam 游戏库 ── */}
+      {steamData && steamData.games.length > 0 && (
+        <SteamLibrary data={steamData} />
+      )}
+    </>
   );
 }

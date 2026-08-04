@@ -1,0 +1,114 @@
+{
+  "player": {
+    "name": "死宅不学习玩什么游戏？！",
+    "avatar": "https://avatars.steamstatic.com/3f5e9daea59216d7fe13df4e031d3537580e5e21_full.jpg",
+    "profileUrl": "https://steamcommunity.com/id/barnettz/"
+  },
+  "totalGames": 324,
+  "totalPlaytimeHours": 5653.4,
+  "games": [
+    {
+      "appId": 250900,
+      "name": "The Binding of Isaac: Rebirth",
+      "playtimeMinutes": 15811,
+      "playtimeHours": 263.5,
+      "lastPlayed": 1785853233,
+      "recentPlaytime": 2259
+    },
+    {
+      "appId": 2868840,
+      "name": "Slay the Spire 2",
+      "playtimeMinutes": 12047,
+      "playtimeHours": 200.8,
+      "lastPlayed": 1782789169,
+      "recentPlaytime": 0
+    },
+    {
+      "appId": 526870,
+      "name": "Satisfactory",
+      "playtimeMinutes": 9440,
+      "playtimeHours": 157.3,
+      "lastPlayed": 1728209431,
+      "recentPlaytime": 0
+    },
+    {
+      "appId": 105600,
+      "name": "Terraria",
+      "playtimeMinutes": 9146,
+      "playtimeHours": 152.4,
+      "lastPlayed": 1597824165,
+      "recentPlaytime": 0
+    },
+    {
+      "appId": 2622380,
+      "name": "ELDEN RING NIGHTREIGN",
+      "playtimeMinutes": 8579,
+      "playtimeHours": 143,
+      "lastPlayed": 1770390262,
+      "recentPlaytime": 0
+    },
+    {
+      "appId": 1267910,
+      "name": "Melvor Idle",
+      "playtimeMinutes": 8466,
+      "playtimeHours": 141.1,
+      "lastPlayed": 1701500733,
+      "recentPlaytime": 0
+    },
+    {
+      "appId": 1172620,
+      "name": "Sea of Thieves",
+      "playtimeMinutes": 8009,
+      "playtimeHours": 133.5,
+      "lastPlayed": 1612117516,
+      "recentPlaytime": 0
+    },
+    {
+      "appId": 374320,
+      "name": "DARK SOULS™ III",
+      "playtimeMinutes": 7934,
+      "playtimeHours": 132.2,
+      "lastPlayed": 1721457237,
+      "recentPlaytime": 0
+    },
+    {
+      "appId": 582010,
+      "name": "Monster Hunter: World",
+      "playtimeMinutes": 7883,
+      "playtimeHours": 131.4,
+      "lastPlayed": 1626832212,
+      "recentPlaytime": 0
+    },
+    {
+      "appId": 435150,
+      "name": "Divinity: Original Sin 2",
+      "playtimeMinutes": 7503,
+      "playtimeHours": 125.1,
+      "lastPlayed": 1538603804,
+      "recentPlaytime": 0
+    },
+    {
+      "appId": 3590,
+      "name": "Plants vs. Zombies: Game of the Year",
+      "playtimeMinutes": 6608,
+      "playtimeHours": 110.1,
+      "lastPlayed": 1678533281,
+      "recentPlaytime": 0
+    },
+    {
+      "appId": 814380,
+      "name": "Sekiro™: Shadows Die Twice",
+      "playtimeMinutes": 6348,
+      "playtimeHours": 105.8,
+      "lastPlayed": 1741871241,
+      "recentPlaytime": 0
+    }
+  ],
+  "featuredAppIds": [
+    "1245620",
+    "271590",
+    "1687950",
+    "1086940"
+  ],
+  "fetchedAt": "2026-08-05T00:00:00.000Z"
+}
