@@ -550,55 +550,55 @@ export const travelCities: TravelCity[] = [
 // -----------------------------------------------------------
 export interface Game {
   name: string;
+  nameEn: string;
   genre: string;
   description: string;
-  highlight?: boolean;
+  /** Steam App ID，用于获取海报和截图 */
+  steamAppId: string;
+  /** 主题色 */
+  accentColor: string;
 }
 
 export const games: Game[] = [
   {
-    name: "风暴英雄",
-    genre: "MOBA",
-    description:
-      "暴雪全家桶的情怀之作。虽然已经进入维护模式，但那些与好友开黑的夜晚\
-和团战翻盘的瞬间，是无可替代的游戏记忆。最爱玩阿巴瑟和希尔瓦娜斯。",
-    highlight: true,
-  },
-  {
-    name: "塞尔达传说：王国之泪",
-    genre: "开放世界 / 动作冒险",
-    description:
-      "从天空岛一跃而下，穿过云层俯瞰海拉鲁大陆。究极手的创造自由度\
-让人惊叹——林克真是史上最强工程师。",
-    highlight: true,
-  },
-  {
     name: "艾尔登法环",
-    genre: "动作 RPG",
+    nameEn: "Elden Ring",
+    genre: "开放世界 / 动作 RPG",
     description:
       "狭间之地的每一寸土地都充满危险与惊喜。在无数次「YOU DIED」之后，\
 击败玛莲妮亚的那一刻，手掌出汗，心跳加速。",
+    steamAppId: "1245620",
+    accentColor: "#C9A44B",
   },
   {
-    name: "星露谷物语",
-    genre: "模拟经营",
+    name: "GTA5",
+    nameEn: "Grand Theft Auto V",
+    genre: "开放世界 / 动作冒险",
     description:
-      "种田、钓鱼、挖矿、恋爱——简单像素下是一个让人忘记时间的世界。\
-每当压力大的时候就会回鹈鹕镇住几天。",
+      "洛圣都的阳光下，三个男人的命运交织在一起。抢劫、飙车、跳伞——\
+在这座永不沉睡的城市里，你可以成为任何人，做任何事。",
+    steamAppId: "271590",
+    accentColor: "#4CAF50",
   },
   {
-    name: "空洞骑士",
-    genre: "类银河城 / 动作",
+    name: "女神异闻录5 皇家版",
+    nameEn: "Persona 5 Royal",
+    genre: "JRPG / 角色扮演",
     description:
-      "圣巢的每一处角落都被手绘的美丽与忧伤填满。\
-在白宫跳跳乐中磨炼出的耐心，大概比代码调试还多。",
+      "白天是东京的高中生，夜晚是偷心的怪盗团。回合制战斗与日常养成\
+完美融合，配上目黑将司的酸爵士配乐——这是一场华丽的青春革命。",
+    steamAppId: "1687950",
+    accentColor: "#E53935",
   },
   {
-    name: "荒野大镖客：救赎 2",
-    genre: "开放世界 / 剧情",
+    name: "博德之门3",
+    nameEn: "Baldur's Gate 3",
+    genre: "CRPG / 角色扮演",
     description:
-      "亚瑟·摩根的故事是关于救赎的最美悲剧。在西部荒野中策马奔腾，\
-看日出日落，这是一个让人愿意慢下来沉浸其中的世界。",
+      "拉瑞安用 D&D 5E 规则书写了一封给 CRPG 的情书。每一个选择都在\
+悄然改写故事的走向——骰子掷下的那一刻，费伦的命运在你手中。",
+    steamAppId: "1086940",
+    accentColor: "#7E57C2",
   },
 ];
 
