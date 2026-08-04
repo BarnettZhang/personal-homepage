@@ -13,18 +13,4 @@ const hobbies = defineCollection({
   }),
 });
 
-const projects = defineCollection({
-  loader: glob({ pattern: "**/*.md", base: "./src/content/projects" }),
-  schema: z.object({
-    title: z.string(),
-    description: z.string(),
-    tech: z.array(z.string()).default([]),
-    link: z.string().url().optional(),
-    github: z.string().url().optional(),
-    image: z.string().optional(),
-    featured: z.boolean().default(false),
-    order: z.number().default(0),
-  }),
-});
-
-export const collections = { hobbies, projects };
+export const collections = { hobbies };

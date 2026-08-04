@@ -603,27 +603,6 @@ export const games: Game[] = [
 ];
 
 // -----------------------------------------------------------
-//  技能
-// -----------------------------------------------------------
-export interface Skill {
-  name: string;
-  level: number; // 0-100
-}
-
-export const skills: Skill[] = [
-  { name: "Vue 2 / 3", level: 92 },
-  { name: "React", level: 80 },
-  { name: "SvelteKit", level: 80 },
-  { name: "TypeScript", level: 88 },
-  { name: "Tailwind CSS", level: 90 },
-  { name: "Tiptap", level: 85 },
-  { name: "ECharts / 可视化", level: 82 },
-  { name: "SSE / WebSocket", level: 78 },
-  { name: "Docker / Nginx", level: 72 },
-  { name: "CI / CD", level: 70 },
-];
-
-// -----------------------------------------------------------
 //  社交链接
 // -----------------------------------------------------------
 export interface SocialLink {
