@@ -553,10 +553,12 @@ export interface Game {
   nameEn: string;
   genre: string;
   description: string;
-  /** Steam App ID，用于获取海报和截图 */
+  /** Steam App ID，用于获取海报 */
   steamAppId: string;
   /** 主题色 */
   accentColor: string;
+  /** Steam 商店 HLS 预告片 URL，hover 时播放 */
+  trailerUrl: string;
 }
 
 export const games: Game[] = [
@@ -569,6 +571,8 @@ export const games: Game[] = [
 击败玛莲妮亚的那一刻，手掌出汗，心跳加速。",
     steamAppId: "1245620",
     accentColor: "#C9A44B",
+    trailerUrl:
+      "https://video.akamai.steamstatic.com/store_trailers/1245620/468149/7d588828f80907ca97efdcb1e6ef72b4ce2b1d0d/1750650511/hls_264_master.m3u8?t=1654109241",
   },
   {
     name: "GTA5",
@@ -579,6 +583,8 @@ export const games: Game[] = [
 在这座永不沉睡的城市里，你可以成为任何人，做任何事。",
     steamAppId: "271590",
     accentColor: "#4CAF50",
+    trailerUrl:
+      "https://video.akamai.steamstatic.com/store_trailers/271590/844302/de4ad49997171bd3f4d05299cc3e718cfe0307ee/1751269402/hls_264_master.m3u8?t=1741119978",
   },
   {
     name: "女神异闻录5 皇家版",
@@ -589,6 +595,8 @@ export const games: Game[] = [
 完美融合，配上目黑将司的酸爵士配乐——这是一场华丽的青春革命。",
     steamAppId: "1687950",
     accentColor: "#E53935",
+    trailerUrl:
+      "https://video.akamai.steamstatic.com/store_trailers/1687950/506609/4ee1371464ce2149f69f89c36b9f906e369db2f1/1750725763/hls_264_master.m3u8?t=1722428147",
   },
   {
     name: "博德之门3",
@@ -599,6 +607,8 @@ export const games: Game[] = [
 悄然改写故事的走向——骰子掷下的那一刻，费伦的命运在你手中。",
     steamAppId: "1086940",
     accentColor: "#7E57C2",
+    trailerUrl:
+      "https://video.akamai.steamstatic.com/store_trailers/1086940/637951/59ca25b847b0e471638d1e2474acf71b068d57f0/1750615003/hls_264_master.m3u8?t=1702007645",
   },
 ];
 
