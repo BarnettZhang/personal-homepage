@@ -1,6 +1,9 @@
 ---
+import { Picture } from "astro:assets";
 import Layout from "../../layouts/Layout.astro";
+import TravelPhotoLightbox from "../../components/TravelPhotoLightbox";
 import { travelCities } from "../../data/profile";
+import { getTravelPhoto, getTravelPhotoLarge } from "../../lib/photos";
 
 export function getStaticPaths() {
   return travelCities.map((city) => ({
@@ -14,6 +17,20 @@ const city = travelCities.find((c) => c.slug === slug);
 if (!city) {
   return Astro.redirect("/travel");
 }
+
+// 全页照片按展示顺序展平，供灯箱左右切换
+const galleryPhotos = city.attractions.flatMap((a) =>
+  a.photos.map((path) => ({ path, caption: a.name }))
+);
+const photoIndexMap = new Map(galleryPhotos.map((g, i) => [g.path, i]));
+
+const lightboxPhotos = await Promise.all(
+  galleryPhotos.map(async (g, i) => ({
+    ...(await getTravelPhotoLarge(g.path)),
+    caption: g.caption,
+    alt: `${g.caption} · ${city.city} 照片 ${i + 1}`,
+  }))
+);
 ---
 
 <Layout title={`${city.city} · 旅行`}>
@@ -86,12 +103,22 @@ if (!city) {
                   }`}>
                     {
                       attraction.photos.map((photo, i) => (
-                        <div class="overflow-hidden rounded-lg border border-white/5 group/photo">
-                          <img
-                            src={photo}
+                        <div
+                          class="overflow-hidden rounded-lg border border-white/5 group/photo cursor-zoom-in"
+                          data-photo-index={photoIndexMap.get(photo)}
+                        >
+                          <Picture
+                            src={getTravelPhoto(photo)}
+                            width={1280}
+                            widths={[480, 960, 1280]}
+                            formats={["avif", "webp"]}
+                            fallbackFormat="webp"
+                            quality={80}
+                            sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
                             alt={`${attraction.name} · ${city.city} 照片 ${i + 1}`}
-                            class="w-full h-48 object-cover transition-transform duration-500 group-hover/photo:scale-105"
+                            class="block w-full h-48 object-cover transition-transform duration-500 group-hover/photo:scale-105"
                             loading="lazy"
+                            decoding="async"
                           />
                         </div>
                       ))
@@ -105,6 +132,8 @@ if (!city) {
       </div>
     </div>
   </section>
+
+  <TravelPhotoLightbox client:load photos={lightboxPhotos} />
 
   <!-- 底部导航：下一个城市 -->
   {
