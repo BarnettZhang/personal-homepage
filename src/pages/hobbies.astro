@@ -1,18 +1,9 @@
 ---
-import { getCollection } from "astro:content";
 import Layout from "../layouts/Layout.astro";
-import HobbyGrid from "../components/HobbyGrid";
+import GameGallery from "../components/GameGallery";
 import ScrollReveal from "../components/ScrollReveal";
-
-const hobbies = await getCollection("hobbies");
-const sortedHobbies = hobbies
-  .sort((a, b) => a.data.order - b.data.order)
-  .map((h) => ({
-    title: h.data.title,
-    description: h.data.description,
-    tags: h.data.tags,
-    icon: h.data.icon,
-  }));
+import { games } from "../data/profile";
+import steamGames from "../data/steam-games.json";
 ---
 
 <Layout title="兴趣爱好">
@@ -30,9 +21,14 @@ const sortedHobbies = hobbies
     </div>
   </section>
 
+  <!-- 游戏 -->
   <section class="pb-24 px-6">
     <div class="max-w-5xl mx-auto">
-      <HobbyGrid client:load hobbies={sortedHobbies} />
+      <ScrollReveal client:load>
+        <p class="text-xs tracking-widest uppercase text-ink-muted text-center mb-2">Games</p>
+        <h2 class="text-3xl font-serif font-bold text-ink mb-14 text-center">玩过的游戏</h2>
+      </ScrollReveal>
+      <GameGallery client:load games={games} steamData={steamGames} />
     </div>
   </section>
 </Layout>

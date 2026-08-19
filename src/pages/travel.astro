@@ -1,0 +1,66 @@
+---
+import Layout from "../layouts/Layout.astro";
+import TravelGlobeWrapper from "../components/TravelGlobeWrapper";
+import ScrollReveal from "../components/ScrollReveal";
+import { travelCities } from "../data/profile";
+---
+
+<Layout title="旅行">
+  <!-- 地球区域 -->
+  <section class="relative pt-24 pb-8 px-6 bg-[#080c14]">
+    <div class="max-w-6xl mx-auto text-center">
+      <ScrollReveal client:load>
+        <p class="text-xs tracking-widest uppercase text-slate-400 mb-4">Travel</p>
+        <h1 class="text-4xl md:text-5xl font-serif font-bold text-white mb-3">
+          走过的城市
+        </h1>
+        <p class="text-slate-300 leading-relaxed max-w-lg mx-auto mb-8">
+          用脚步丈量世界，用镜头记录旅程。
+        </p>
+      </ScrollReveal>
+    </div>
+
+    <!-- 3D 地球 -->
+    <div class="max-w-4xl mx-auto h-[580px] md:h-[680px] relative">
+      <TravelGlobeWrapper client:load cities={travelCities} />
+    </div>
+  </section>
+
+  <!-- 城市列表 -->
+  <section class="pb-24 px-6">
+    <div class="max-w-5xl mx-auto">
+      <div class="section-divider"></div>
+      <ScrollReveal client:load>
+        <p class="text-xs tracking-widest uppercase text-slate-400 mb-6 text-center">
+          All Cities
+        </p>
+      </ScrollReveal>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+        {travelCities.map((city) => (
+          <a
+            href={`/travel/${city.slug}`}
+            class="card p-6 group flex flex-col gap-3 no-underline"
+          >
+            <div class="flex items-center gap-3">
+              <span class="text-3xl">{city.emoji}</span>
+              <div>
+                <h3 class="text-lg font-serif font-semibold text-ink group-hover:text-sage transition-colors">
+                  {city.city}
+                </h3>
+                <p class="text-xs text-ink-muted">
+                  {city.country} · {city.year}
+                </p>
+              </div>
+            </div>
+            <p class="text-sm text-ink-light leading-relaxed">
+              {city.description}
+            </p>
+            <span class="text-xs text-sage mt-auto opacity-0 group-hover:opacity-100 transition-opacity">
+              查看详情 →
+            </span>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+</Layout>

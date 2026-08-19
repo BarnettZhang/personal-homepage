@@ -1,67 +1,137 @@
 ---
 import Layout from "../layouts/Layout.astro";
-import Timeline from "../components/Timeline";
-import SkillTree from "../components/SkillTree";
 import ScrollReveal from "../components/ScrollReveal";
+import SkillTags from "../components/SkillTags";
+import {
+  workExperience,
+  projectHighlights,
+  skillCategories,
+} from "../data/profile";
+
+// 拆出工作详情要点
+const workHighlights = [
+  "主导智能企业助手、智控平台等核心系统前端开发，支撑超过 2 万名内部用户使用",
+  "负责复杂交互场景的前端实现与体验优化，覆盖流式输出、富文本编辑、工作流配置、可视化面板等方向",
+  "负责前端工程化与组件化建设，搭建可复用组件能力并推动开发规范统一",
+  "推动超过 20 个功能模块从需求澄清、方案设计到开发上线的完整落地",
+  "组织代码评审和技术讨论，参与外包团队技术面试与考核",
+];
+
+const education = workExperience.filter(
+  (item) => item.title.includes("硕士") || item.title.includes("本科")
+);
 ---
 
-<Layout title="关于我">
+<Layout title="工作">
   <!-- 页头 -->
-  <section class="pt-32 pb-12 px-6">
+  <section class="pt-32 pb-16 px-6">
     <div class="max-w-3xl mx-auto text-center">
       <ScrollReveal client:load>
-        <p class="text-xs tracking-widest uppercase text-ink-muted mb-4">About</p>
+        <p class="text-xs tracking-widest uppercase text-ink-muted mb-4">Work</p>
         <h1 class="text-4xl md:text-5xl font-serif font-bold text-ink mb-5">
-          你好，很高兴认识你
+          工作
         </h1>
         <p class="text-ink-light leading-relaxed max-w-lg mx-auto">
-          一名热爱技术的前端工程师，专注于构建高性能、好用的 Web 应用。
+          B 端平台 & AI 应用前端开发，持续交付高质量产品。
         </p>
       </ScrollReveal>
     </div>
   </section>
 
-  <!-- 个人卡片 -->
+  <!-- 工作经历卡片 -->
   <section class="pb-16 px-6">
     <div class="max-w-2xl mx-auto">
       <ScrollReveal client:load>
-        <div class="card p-10">
-          <div class="flex flex-col md:flex-row items-center gap-8">
-            <div class="w-28 h-28 rounded-full bg-cream-warm flex items-center justify-center text-5xl shrink-0 border-2 border-border">
-              👨‍💻
-            </div>
-            <div>
-              <h2 class="text-2xl font-serif font-bold text-ink mb-3">张同学</h2>
-              <p class="text-ink-light leading-relaxed text-sm">
-                擅长 React 生态、Three.js 3D 图形编程和前端工程化。
-                工作之余喜欢摄影、游戏和探索开源世界。相信好的设计能让技术更有温度。
-              </p>
-            </div>
+        <p class="text-xs tracking-widest uppercase text-ink-muted text-center mb-10">Experience</p>
+
+        {/* 主工作卡片 */}
+        <div class="card p-8 md:p-10 mb-5">
+          <div class="flex items-center gap-3 mb-1.5">
+            <span class="text-xs font-mono text-sage tracking-wide">
+              {workExperience[0].year}
+            </span>
           </div>
+          <h2 class="text-xl font-serif font-semibold text-ink mb-1">
+            {workExperience[0].title}
+          </h2>
+          <p class="text-sm text-ink-muted mb-6">
+            {workExperience[0].company}
+          </p>
+
+          {/* 工作要点 */}
+          <ul class="space-y-3">
+            {workHighlights.map((h) => (
+              <li class="flex items-start gap-2.5 text-sm text-ink-light leading-relaxed">
+                <span class="mt-1.5 w-1.5 h-1.5 rounded-full bg-sage shrink-0" />
+                <span>{h}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        {/* 教育背景 */}
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          {education.map((edu) => (
+            <div class="card p-5 flex items-center gap-4">
+              <span class="text-2xl shrink-0">🎓</span>
+              <div>
+                <p class="text-sm font-medium text-ink">
+                  {edu.title}
+                </p>
+                <p class="text-xs text-ink-muted">
+                  {edu.company} · {edu.year}
+                </p>
+              </div>
+            </div>
+          ))}
         </div>
       </ScrollReveal>
     </div>
   </section>
 
-  <!-- 时间线 -->
+  <!-- 核心项目 -->
   <section class="pb-16 px-6">
-    <div class="max-w-3xl mx-auto">
+    <div class="max-w-2xl mx-auto">
       <ScrollReveal client:load>
-        <p class="text-xs tracking-widest uppercase text-ink-muted text-center mb-2">Timeline</p>
-        <h2 class="text-3xl font-serif font-bold text-ink mb-14 text-center">我的经历</h2>
+        <p class="text-xs tracking-widest uppercase text-ink-muted text-center mb-10">Projects</p>
+
+        <div class="space-y-4">
+          {projectHighlights.map((proj) => (
+            <div class="card p-6 md:p-8">
+              <div class="flex items-start gap-4">
+                <span class="text-2xl shrink-0 mt-0.5">{proj.emoji}</span>
+                <div class="flex-1 min-w-0">
+                  <h3 class="text-lg font-serif font-semibold text-ink mb-1">
+                    {proj.name}
+                  </h3>
+                  <p class="text-xs text-ink-muted mb-3">{proj.role}</p>
+                  <p class="text-sm text-ink-light leading-relaxed mb-4">
+                    {proj.description}
+                  </p>
+                  <div class="flex flex-wrap gap-2">
+                    {proj.tech.map((t) => (
+                      <span class="tag">{t}</span>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
       </ScrollReveal>
-      <Timeline client:load />
     </div>
   </section>
 
   <!-- 技能 -->
   <section class="pb-24 px-6">
-    <div class="max-w-3xl mx-auto">
+    <div class="max-w-2xl mx-auto">
       <ScrollReveal client:load>
-        <p class="text-xs tracking-widest uppercase text-ink-muted text-center mb-2">Skills</p>
-        <h2 class="text-3xl font-serif font-bold text-ink mb-14 text-center">技能雷达</h2>
+        <p class="text-xs tracking-widest uppercase text-ink-muted text-center mb-10">Skills</p>
+
+        <div class="card p-8 md:p-10">
+          <SkillTags client:load categories={skillCategories} />
+        </div>
       </ScrollReveal>
-      <SkillTree client:load />
     </div>
   </section>
 </Layout>

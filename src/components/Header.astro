@@ -1,10 +1,11 @@
 ---
+import { profile } from "../data/profile";
+
 const navItems = [
   { href: "/", label: "首页" },
-  { href: "/projects", label: "项目" },
-  { href: "/about", label: "关于" },
+  { href: "/about", label: "工作" },
   { href: "/hobbies", label: "爱好" },
-  { href: "/contact", label: "联系" },
+  { href: "/travel", label: "旅行" },
 ];
 const currentPath = Astro.url.pathname;
 ---
@@ -12,40 +13,56 @@ const currentPath = Astro.url.pathname;
 <header class="fixed top-0 left-0 right-0 z-50 bg-cream/80 backdrop-blur-md border-b border-border/50">
   <nav class="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
     <a href="/" class="text-xl font-serif font-bold tracking-wide text-ink hover:text-sage transition-colors">
-      张同学
+      {profile.name}
     </a>
 
-    <!-- Desktop -->
-    <ul class="hidden md:flex items-center gap-1">
-      {navItems.map((item) => {
-        const isActive = currentPath === item.href;
-        return (
-          <li>
-            <a
-              href={item.href}
-              class={`relative px-4 py-2 text-sm font-medium rounded-full transition-all duration-200 ${
-                isActive
-                  ? "text-sage bg-sage-subtle"
-                  : "text-ink-muted hover:text-ink hover:bg-cream-warm"
-              }`}
-            >
-              {item.label}
-            </a>
-          </li>
-        );
-      })}
-    </ul>
+    <div class="flex items-center gap-1">
+      <!-- Desktop -->
+      <ul class="hidden md:flex items-center gap-1">
+        {navItems.map((item) => {
+          const isActive = currentPath === item.href;
+          return (
+            <li>
+              <a
+                href={item.href}
+                class={`relative px-4 py-2 text-sm font-medium rounded-full transition-all duration-200 ${
+                  isActive
+                    ? "text-sage bg-sage-subtle"
+                    : "text-ink-muted hover:text-ink hover:bg-cream-warm"
+                }`}
+              >
+                {item.label}
+              </a>
+            </li>
+          );
+        })}
+      </ul>
 
-    <!-- Mobile -->
-    <button
-      id="mobile-menu-btn"
-      class="md:hidden p-2 text-ink-muted hover:text-ink transition-colors"
-      aria-label="Toggle menu"
-    >
-      <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
-      </svg>
-    </button>
+      <!-- 主题切换 -->
+      <button
+        id="theme-toggle"
+        class="p-2 rounded-full text-ink-muted hover:text-ink hover:bg-cream-warm transition-colors"
+        aria-label="切换明暗主题"
+      >
+        <svg id="theme-icon-sun" class="w-5 h-5 hidden" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v2.25m6.364.386l-1.591 1.591M21 12h-2.25m-.386 6.364l-1.591-1.591M12 18.75V21m-4.773-4.227l-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z" />
+        </svg>
+        <svg id="theme-icon-moon" class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M21.752 15.002A9.718 9.718 0 0118 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 003 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 009.002-5.998z" />
+        </svg>
+      </button>
+
+      <!-- Mobile -->
+      <button
+        id="mobile-menu-btn"
+        class="md:hidden p-2 text-ink-muted hover:text-ink transition-colors"
+        aria-label="Toggle menu"
+      >
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+        </svg>
+      </button>
+    </div>
   </nav>
 
   <!-- Mobile menu -->
@@ -77,5 +94,34 @@ const currentPath = Astro.url.pathname;
   const menu = document.getElementById("mobile-menu");
   if (btn && menu) {
     btn.addEventListener("click", () => menu.classList.toggle("hidden"));
+  }
+
+  // 主题切换：与 Layout 的引导脚本共享同一个 .dark 类
+  const themeToggle = document.getElementById("theme-toggle");
+  const rootEl = document.documentElement;
+  const themeColorMeta = document.getElementById("theme-color-meta");
+
+  function applyTheme(theme, save) {
+    rootEl.classList.toggle("dark", theme === "dark");
+    document
+      .getElementById("theme-icon-sun")
+      ?.classList.toggle("hidden", theme !== "dark");
+    document
+      .getElementById("theme-icon-moon")
+      ?.classList.toggle("hidden", theme === "dark");
+    if (themeColorMeta) {
+      themeColorMeta.setAttribute(
+        "content",
+        theme === "dark" ? "#14120f" : "#faf8f5"
+      );
+    }
+    if (save) localStorage.setItem("theme", theme);
+  }
+
+  if (themeToggle) {
+    applyTheme(rootEl.classList.contains("dark") ? "dark" : "light", false);
+    themeToggle.addEventListener("click", () => {
+      applyTheme(rootEl.classList.contains("dark") ? "light" : "dark", true);
+    });
   }
 </script>

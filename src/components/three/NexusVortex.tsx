@@ -1,4 +1,4 @@
-import { Suspense, useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { EffectComposer, Vignette } from "@react-three/postprocessing";
 import * as THREE from "three";
@@ -50,27 +50,35 @@ function Scene() {
 
 function LoadingScreen() {
   return (
-    <div className="absolute inset-0 flex items-center justify-center bg-cream">
+    <div className="absolute inset-0 z-20 flex items-center justify-center bg-cream">
       <div className="w-8 h-8 border-2 border-sage border-t-transparent rounded-full animate-spin opacity-60" />
     </div>
   );
 }
 
 export default function ArtScene() {
-  const [dpr, setDpr] = useState(1.5);
+  const [ready, setReady] = useState(false);
+
+  useEffect(() => {
+    // 给 Canvas 足够时间初始化 WebGL 上下文
+    const timer = setTimeout(() => setReady(true), 600);
+    return () => clearTimeout(timer);
+  }, []);
+
+  const dpr = useRef<[number, number]>([1, 1.5]);
 
   useEffect(() => {
     const cores = navigator.hardwareConcurrency || 4;
-    if (cores <= 4) setDpr(1);
-    else if (cores <= 8) setDpr(1.5);
-    else setDpr(2);
+    if (cores <= 4) dpr.current = [1, 1];
+    else if (cores <= 8) dpr.current = [1, 1.5];
+    else dpr.current = [1, 2];
   }, []);
 
   return (
     <>
-      <LoadingScreen />
+      {!ready && <LoadingScreen />}
       <Canvas
-        dpr={[1, dpr]}
+        dpr={dpr.current}
         camera={{ position: [0, 0, 7], fov: 48, near: 0.1, far: 30 }}
         gl={{
           antialias: true,
@@ -80,9 +88,7 @@ export default function ArtScene() {
         }}
         style={{ position: "absolute", inset: 0 }}
       >
-        <Suspense fallback={null}>
-          <Scene />
-        </Suspense>
+        <Scene />
       </Canvas>
     </>
   );

@@ -15,9 +15,22 @@ const { title, description } = Astro.props;
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="theme-color" content="#faf8f5" />
+    <meta name="theme-color" id="theme-color-meta" content="#faf8f5" />
     <meta name="description" content={description || "张同学的个人主页 — 前端开发者 · 热爱技术与生活"} />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+    <!-- 主题引导：首帧渲染前恢复用户偏好，避免闪烁 -->
+    <script is:inline>
+      (function () {
+        try {
+          var stored = localStorage.getItem("theme");
+          var prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+          if (stored === "dark" || (!stored && prefersDark)) {
+            document.documentElement.classList.add("dark");
+          }
+        } catch (e) {}
+      })();
+    </script>
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />

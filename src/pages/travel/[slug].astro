@@ -1,0 +1,162 @@
+---
+import { Picture } from "astro:assets";
+import Layout from "../../layouts/Layout.astro";
+import TravelPhotoLightbox from "../../components/TravelPhotoLightbox";
+import { travelCities } from "../../data/profile";
+import { getTravelPhoto, getTravelPhotoLarge } from "../../lib/photos";
+
+export function getStaticPaths() {
+  return travelCities.map((city) => ({
+    params: { slug: city.slug },
+  }));
+}
+
+const { slug } = Astro.params;
+const city = travelCities.find((c) => c.slug === slug);
+
+if (!city) {
+  return Astro.redirect("/travel");
+}
+
+// 全页照片按展示顺序展平，供灯箱左右切换
+const galleryPhotos = city.attractions.flatMap((a) =>
+  a.photos.map((path) => ({ path, caption: a.name }))
+);
+const photoIndexMap = new Map(galleryPhotos.map((g, i) => [g.path, i]));
+
+const lightboxPhotos = await Promise.all(
+  galleryPhotos.map(async (g, i) => ({
+    ...(await getTravelPhotoLarge(g.path)),
+    caption: g.caption,
+    alt: `${g.caption} · ${city.city} 照片 ${i + 1}`,
+  }))
+);
+---
+
+<Layout title={`${city.city} · 旅行`}>
+  <!-- 城市头部 -->
+  <section class="pt-32 pb-8 px-6">
+    <div class="max-w-4xl mx-auto">
+      <a
+        href="/travel"
+        class="inline-flex items-center gap-2 text-sm text-ink-muted hover:text-sage transition-colors mb-8"
+      >
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="15 18 9 12 15 6" />
+        </svg>
+        返回旅行地图
+      </a>
+
+      <div class="flex items-center gap-4 mb-6">
+        <span class="text-5xl">{city.emoji}</span>
+        <div>
+          <h1 class="text-3xl md:text-4xl font-serif font-bold text-ink">
+            {city.city}
+          </h1>
+          <p class="text-sm text-ink-muted mt-1">
+            {city.country} · {city.year}
+          </p>
+        </div>
+      </div>
+
+      <p class="text-ink-light leading-relaxed max-w-2xl text-base">
+        {city.description}
+      </p>
+    </div>
+  </section>
+
+  <!-- 景点介绍（含照片） -->
+  <section class="pb-24 px-6">
+    <div class="max-w-4xl mx-auto">
+      <div class="section-divider"></div>
+      <h2 class="text-lg font-serif font-semibold text-ink mb-6">
+        🗺️ 到过的景点
+      </h2>
+      <div class="space-y-8">
+        {
+          city.attractions.map((attraction) => (
+            <div class="card p-5 flex flex-col gap-4">
+              <!-- 景点信息 -->
+              <div class="flex items-start gap-3">
+                <div class="flex-1">
+                  <h3 class="text-base font-serif font-semibold text-ink flex items-center gap-2">
+                    {attraction.name}
+                    {attraction.highlight && (
+                      <span class="tag tag-active text-[10px]">必去</span>
+                    )}
+                  </h3>
+                  <p class="text-sm text-ink-light leading-relaxed mt-1.5">
+                    {attraction.description}
+                  </p>
+                </div>
+              </div>
+
+              <!-- 该景点的照片 -->
+              {
+                attraction.photos.length > 0 && (
+                  <div class={`grid gap-3 ${
+                    attraction.photos.length === 1
+                      ? "grid-cols-1"
+                      : attraction.photos.length === 2
+                      ? "grid-cols-1 sm:grid-cols-2"
+                      : "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3"
+                  }`}>
+                    {
+                      attraction.photos.map((photo, i) => (
+                        <div
+                          class="overflow-hidden rounded-lg border border-white/5 group/photo cursor-zoom-in"
+                          data-photo-index={photoIndexMap.get(photo)}
+                        >
+                          <Picture
+                            src={getTravelPhoto(photo)}
+                            width={1280}
+                            widths={[480, 960, 1280]}
+                            formats={["avif", "webp"]}
+                            fallbackFormat="webp"
+                            quality={80}
+                            sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
+                            alt={`${attraction.name} · ${city.city} 照片 ${i + 1}`}
+                            class="block w-full h-48 object-cover transition-transform duration-500 group-hover/photo:scale-105"
+                            loading="lazy"
+                            decoding="async"
+                          />
+                        </div>
+                      ))
+                    }
+                  </div>
+                )
+              }
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <TravelPhotoLightbox client:load photos={lightboxPhotos} />
+
+  <!-- 底部导航：下一个城市 -->
+  {
+    (() => {
+      const currentIndex = travelCities.findIndex((c) => c.slug === city.slug);
+      const nextCity = currentIndex < travelCities.length - 1 ? travelCities[currentIndex + 1] : travelCities[0];
+      return (
+        <section class="pb-24 px-6">
+          <div class="max-w-4xl mx-auto text-center">
+            <p class="text-xs text-ink-muted mb-3">下一个城市</p>
+            <a
+              href={`/travel/${nextCity.slug}`}
+              class="inline-flex items-center gap-3 text-ink hover:text-sage transition-colors group"
+            >
+              <span class="text-2xl">{nextCity.emoji}</span>
+              <span class="text-lg font-serif font-semibold">{nextCity.city}</span>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="transition-transform group-hover:translate-x-1">
+                <polyline points="9 18 15 12 9 6" />
+              </svg>
+            </a>
+          </div>
+        </section>
+      )
+    })()
+  }
+</Layout>
