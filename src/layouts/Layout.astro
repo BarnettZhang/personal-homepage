@@ -1,6 +1,7 @@
 ---
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
+import { t } from "../i18n/ui";
 import "../styles/global.css";
 
 export interface Props {
@@ -8,16 +9,32 @@ export interface Props {
   description?: string;
 }
 const { title, description } = Astro.props;
+const lang = Astro.locals.lang;
+const defaultTitle = t(lang, "layout.defaultTitle");
+const defaultDescription = t(lang, "layout.defaultDescription");
 ---
 
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang={lang}>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#faf8f5" />
-    <meta name="description" content={description || "张同学的个人主页 — 前端开发者 · 热爱技术与生活"} />
+    <meta name="description" content={description || defaultDescription} />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+    <!-- 首次访问自动检测系统语言：无 cookie 时写入并刷新一次 -->
+    <script is:inline>
+      (function () {
+        try {
+          if (/(?:^|;\s*)lang=/.test(document.cookie)) return;
+          var nav = (navigator.language || (navigator.languages && navigator.languages[0]) || "zh").toLowerCase();
+          var lang = nav.indexOf("zh") === 0 ? "zh" : "en";
+          document.cookie = "lang=" + lang + "; path=/; max-age=31536000; samesite=lax";
+          location.reload();
+        } catch (e) {}
+      })();
+    </script>
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -27,7 +44,7 @@ const { title, description } = Astro.props;
       rel="stylesheet"
     />
 
-    <title>{title ? `${title} | Zhang` : "Zhang — Frontend Developer & Creative Coder"}</title>
+    <title>{title ? `${title} | Zhang` : defaultTitle}</title>
   </head>
   <body>
     <Header />

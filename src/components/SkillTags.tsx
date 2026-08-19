@@ -1,6 +1,9 @@
 "use client";
 
-import type { SkillCategory } from "../data/profile";
+interface SkillCategory {
+  category: string;
+  items: string[];
+}
 
 interface SkillTagsProps {
   categories: SkillCategory[];

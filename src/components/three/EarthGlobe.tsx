@@ -5,6 +5,7 @@ import { Canvas, useFrame } from "@react-three/fiber";
 import { OrbitControls, Sphere, Html, useTexture } from "@react-three/drei";
 import * as THREE from "three";
 import type { TravelCity } from "../../data/profile";
+import type { Locale } from "../../i18n/types";
 
 // ============================================================
 //  Earth texture URL (NASA Blue Marble 2048px)
@@ -131,11 +132,13 @@ function CityMarker({
   city,
   index,
   radius,
+  lang,
   onClick,
 }: {
   city: TravelCity;
   index: number;
   radius: number;
+  lang: Locale;
   onClick: (city: TravelCity) => void;
 }) {
   const [hovered, setHovered] = useState(false);
@@ -294,7 +297,7 @@ function CityMarker({
             boxShadow: "0 4px 20px rgba(0,0,0,0.5)",
           }}
         >
-          {city.emoji} {city.city}
+          {city.emoji} {city.city[lang]}
         </div>
       </Html>
     </group>
@@ -306,9 +309,11 @@ function CityMarker({
 // ============================================================
 function Earth({
   cities,
+  lang,
   onCityClick,
 }: {
   cities: TravelCity[];
+  lang: Locale;
   onCityClick: (city: TravelCity) => void;
 }) {
   const earthRef = useRef<THREE.Mesh>(null!);
@@ -333,10 +338,11 @@ function Earth({
       {/* 城市标记 */}
       {cities.map((city, i) => (
         <CityMarker
-          key={city.city}
+          key={city.slug}
           city={city}
           index={i}
           radius={2}
+          lang={lang}
           onClick={onCityClick}
         />
       ))}
@@ -361,9 +367,11 @@ function LoadingPlaceholder() {
 // ============================================================
 function Scene({
   cities,
+  lang,
   onCityClick,
 }: {
   cities: TravelCity[];
+  lang: Locale;
   onCityClick: (city: TravelCity) => void;
 }) {
   return (
@@ -384,7 +392,7 @@ function Scene({
       <Stars />
 
       <Suspense fallback={<LoadingPlaceholder />}>
-        <Earth cities={cities} onCityClick={onCityClick} />
+        <Earth cities={cities} lang={lang} onCityClick={onCityClick} />
       </Suspense>
 
       <OrbitControls
@@ -404,10 +412,11 @@ function Scene({
 // ============================================================
 interface EarthGlobeProps {
   cities: TravelCity[];
+  lang: Locale;
   onCityClick: (city: TravelCity) => void;
 }
 
-export default function EarthGlobe({ cities, onCityClick }: EarthGlobeProps) {
+export default function EarthGlobe({ cities, lang, onCityClick }: EarthGlobeProps) {
   return (
     <div
       style={{
@@ -423,7 +432,7 @@ export default function EarthGlobe({ cities, onCityClick }: EarthGlobeProps) {
         gl={{ antialias: true, alpha: true }}
         style={{ background: "transparent" }}
       >
-        <Scene cities={cities} onCityClick={onCityClick} />
+        <Scene cities={cities} lang={lang} onCityClick={onCityClick} />
       </Canvas>
     </div>
   );

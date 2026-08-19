@@ -2,6 +2,8 @@
 
 import { useState, useRef, useEffect, useCallback } from "react";
 import type { Game } from "../data/profile";
+import type { Locale } from "../i18n/types";
+import { t, tf } from "../i18n/ui";
 
 // ── Steam 数据类型 ─────────────────────────────────────────
 export interface SteamGame {
@@ -25,6 +27,7 @@ export interface SteamData {
 interface GameGalleryProps {
   games: Game[];
   steamData?: SteamData;
+  lang: Locale;
 }
 
 // ── 工具函数 ───────────────────────────────────────────────
@@ -36,22 +39,27 @@ function capsuleUrl(appId: string | number) {
   return `https://cdn.cloudflare.steamstatic.com/steam/apps/${appId}/capsule_616x353.jpg`;
 }
 
-function timeAgo(unixTs: number): string {
+function timeAgo(lang: Locale, unixTs: number): string {
   if (!unixTs) return "";
   const now = Math.floor(Date.now() / 1000);
   const diff = now - unixTs;
-  if (diff < 60) return "刚刚";
-  if (diff < 3600) return `${Math.floor(diff / 60)} 分钟前`;
-  if (diff < 86400) return `${Math.floor(diff / 3600)} 小时前`;
-  if (diff < 2592000) return `${Math.floor(diff / 86400)} 天前`;
-  if (diff < 31536000) return `${Math.floor(diff / 2592000)} 个月前`;
-  return `${Math.floor(diff / 31536000)} 年前`;
+  if (diff < 60) return t(lang, "game.justNow");
+  if (diff < 3600) return tf(lang, "game.minutesAgo", { n: Math.floor(diff / 60) });
+  if (diff < 86400) return tf(lang, "game.hoursAgo", { n: Math.floor(diff / 3600) });
+  if (diff < 2592000) return tf(lang, "game.daysAgo", { n: Math.floor(diff / 86400) });
+  if (diff < 31536000) return tf(lang, "game.monthsAgo", { n: Math.floor(diff / 2592000) });
+  return tf(lang, "game.yearsAgo", { n: Math.floor(diff / 31536000) });
 }
 
-function playtimeLabel(minutes: number): string {
+function playtimeLabel(lang: Locale, minutes: number): string {
   const h = minutes / 60;
-  if (h >= 1) return `${Math.round(h * 10) / 10} 小时`;
-  return `${minutes} 分钟`;
+  if (h >= 1) return tf(lang, "game.hours", { n: Math.round(h * 10) / 10 });
+  return tf(lang, "game.minutes", { n: minutes });
+}
+
+/** 游戏名的「另一语言」版本，用于卡片眉题的装饰性双语展示 */
+function otherName(game: Game, lang: Locale): string {
+  return game.name[lang === "zh" ? "en" : "zh"];
 }
 
 // ============================================================
@@ -59,9 +67,11 @@ function playtimeLabel(minutes: number): string {
 // ============================================================
 function VideoModal({
   game,
+  lang,
   onClose,
 }: {
   game: Game;
+  lang: Locale;
   onClose: () => void;
 }) {
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -132,7 +142,7 @@ function VideoModal({
           onClick={onClose}
           className="absolute -top-10 right-0 text-white/60 hover:text-white text-sm tracking-wider transition-colors"
         >
-          ESC 关闭
+          {t(lang, "game.escClose")}
         </button>
 
         {/* 视频 */}
@@ -167,14 +177,14 @@ function VideoModal({
         <div className="flex items-center gap-4 px-1">
           <div>
             <h2 className="text-xl font-serif font-bold text-white">
-              {game.name}
+              {game.name[lang]}
             </h2>
             <p className="text-sm mt-0.5" style={{ color: game.accentColor }}>
-              {game.nameEn}
+              {otherName(game, lang)}
             </p>
           </div>
           <div className="flex flex-wrap gap-2 ml-auto">
-            {game.genre.split(" / ").map((g) => (
+            {game.genre[lang].split(" / ").map((g) => (
               <span
                 key={g}
                 className="text-[11px] px-2.5 py-0.5 rounded-full border transition-colors"
@@ -208,7 +218,7 @@ function VideoModal({
 // ============================================================
 //  GameCard — 单张游戏卡片
 // ============================================================
-function GameCard({ game, index }: { game: Game; index: number }) {
+function GameCard({ game, index, lang }: { game: Game; index: number; lang: Locale }) {
   const [hovered, setHovered] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
   const [videoReady, setVideoReady] = useState(false);
@@ -354,10 +364,10 @@ function GameCard({ game, index }: { game: Game; index: number }) {
             className="text-xs tracking-[0.2em] uppercase mb-1.5 font-semibold transition-all duration-400"
             style={{ color: game.accentColor, opacity: hovered ? 0.9 : 0.8 }}
           >
-            {game.nameEn}
+            {otherName(game, lang)}
           </p>
           <h3 className="text-2xl font-serif font-bold text-white mb-2.5">
-            {game.name}
+            {game.name[lang]}
             <span
               className="inline-block w-2 h-2 rounded-full ml-2 align-middle transition-all duration-500"
               style={{
@@ -369,7 +379,7 @@ function GameCard({ game, index }: { game: Game; index: number }) {
             />
           </h3>
           <div className="flex flex-wrap gap-2">
-            {game.genre.split(" / ").map((g) => (
+            {game.genre[lang].split(" / ").map((g) => (
               <span
                 key={g}
                 className="text-[11px] px-2.5 py-0.5 rounded-full border transition-all duration-400"
@@ -418,14 +428,14 @@ function GameCard({ game, index }: { game: Game; index: number }) {
             className="text-[11px] tracking-wider"
             style={{ color: `${game.accentColor}cc` }}
           >
-            {videoReady ? "▶ 实机演示  ·  点击放大" : "加载中..."}
+            {videoReady ? t(lang, "game.hoverHint") : t(lang, "game.loading")}
           </span>
         </div>
       </div>
 
       {/* ── 弹窗 ── */}
       {modalOpen && (
-        <VideoModal game={game} onClose={() => setModalOpen(false)} />
+        <VideoModal game={game} lang={lang} onClose={() => setModalOpen(false)} />
       )}
     </>
   );
@@ -434,7 +444,15 @@ function GameCard({ game, index }: { game: Game; index: number }) {
 // ============================================================
 //  SteamGameCard — Steam 游戏库卡片（小尺寸）
 // ============================================================
-function SteamGameCard({ game, maxHours }: { game: SteamGame; maxHours: number }) {
+function SteamGameCard({
+  game,
+  maxHours,
+  lang,
+}: {
+  game: SteamGame;
+  maxHours: number;
+  lang: Locale;
+}) {
   const [imgError, setImgError] = useState(false);
 
   return (
@@ -468,7 +486,7 @@ function SteamGameCard({ game, maxHours }: { game: SteamGame; maxHours: number }
       {game.recentPlaytime > 0 && (
         <div className="absolute top-3 left-3 z-10">
           <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-green-500/85 text-white tracking-wide">
-            最近在玩
+            {t(lang, "game.recentlyPlayed")}
           </span>
         </div>
       )}
@@ -492,11 +510,11 @@ function SteamGameCard({ game, maxHours }: { game: SteamGame; maxHours: number }
 
         <div className="flex items-center justify-between">
           <span className="text-white/65 text-[11px]">
-            {playtimeLabel(game.playtimeMinutes)}
+            {playtimeLabel(lang, game.playtimeMinutes)}
           </span>
           {game.lastPlayed > 0 && (
             <span className="text-white/35 text-[10px]">
-              {timeAgo(game.lastPlayed)}
+              {timeAgo(lang, game.lastPlayed)}
             </span>
           )}
         </div>
@@ -508,7 +526,7 @@ function SteamGameCard({ game, maxHours }: { game: SteamGame; maxHours: number }
 // ============================================================
 //  SteamLibrary — Steam 游戏库板块
 // ============================================================
-function SteamLibrary({ data: initialData }: { data: SteamData }) {
+function SteamLibrary({ data: initialData, lang }: { data: SteamData; lang: Locale }) {
   const [data, setData] = useState<SteamData>(initialData);
   const [refreshing, setRefreshing] = useState(false);
   const [error, setError] = useState("");
@@ -543,10 +561,13 @@ function SteamLibrary({ data: initialData }: { data: SteamData }) {
         />
         <div className="flex-1 min-w-0">
           <h3 className="text-lg font-serif font-bold text-ink leading-snug">
-            {data.player.name} 的 Steam 游戏库
+            {tf(lang, "game.steamLibrary", { name: data.player.name })}
           </h3>
           <p className="text-ink-muted text-sm mt-0.5">
-            {data.totalGames} 款游戏 · 总计 {data.totalPlaytimeHours} 小时
+            {tf(lang, "game.totalStats", {
+              count: data.totalGames,
+              hours: data.totalPlaytimeHours,
+            })}
           </p>
         </div>
         <a
@@ -555,7 +576,7 @@ function SteamLibrary({ data: initialData }: { data: SteamData }) {
           rel="noopener noreferrer"
           className="text-xs tracking-wider text-ink-muted hover:text-ink-light transition-colors border border-ink-muted/20 rounded-full px-4 py-2"
         >
-          Steam 主页 ↗
+          {t(lang, "game.steamProfile")}
         </a>
         <button
           onClick={handleRefresh}
@@ -571,24 +592,26 @@ function SteamLibrary({ data: initialData }: { data: SteamData }) {
                   : "border-ink-muted/30"
             }`}
           />
-          {refreshing ? "刷新中..." : error ? "重试" : "刷新数据"}
+          {refreshing ? t(lang, "game.refreshing") : error ? t(lang, "game.retry") : t(lang, "game.refresh")}
         </button>
       </div>
 
       {/* ── 错误提示 ── */}
       {error && (
-        <p className="text-xs text-red-400/80 mb-4 -mt-6">刷新失败: {error}</p>
+        <p className="text-xs text-red-400/80 mb-4 -mt-6">{t(lang, "game.refreshFailed")} {error}</p>
       )}
 
       {/* ── 游戏网格 ── */}
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
         {data.games.map((game) => (
-          <SteamGameCard key={game.appId} game={game} maxHours={maxHours} />
+          <SteamGameCard key={game.appId} game={game} maxHours={maxHours} lang={lang} />
         ))}
       </div>
 
       <p className="text-center text-ink-muted/40 text-xs mt-8">
-        数据更新于 {new Date(data.fetchedAt).toLocaleString("zh-CN")} · 游玩时长前 12 款
+        {tf(lang, "game.updatedAt", {
+          date: new Date(data.fetchedAt).toLocaleString(lang === "zh" ? "zh-CN" : "en-US"),
+        })}
       </p>
     </div>
   );
@@ -597,19 +620,19 @@ function SteamLibrary({ data: initialData }: { data: SteamData }) {
 // ============================================================
 //  Gallery 容器
 // ============================================================
-export default function GameGallery({ games, steamData }: GameGalleryProps) {
+export default function GameGallery({ games, steamData, lang }: GameGalleryProps) {
   return (
     <>
       {/* ── 精选游戏 ── */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 max-w-4xl mx-auto">
         {games.map((game, i) => (
-          <GameCard key={game.steamAppId} game={game} index={i} />
+          <GameCard key={game.steamAppId} game={game} index={i} lang={lang} />
         ))}
       </div>
 
       {/* ── Steam 游戏库 ── */}
       {steamData && steamData.games.length > 0 && (
-        <SteamLibrary data={steamData} />
+        <SteamLibrary data={steamData} lang={lang} />
       )}
     </>
   );
