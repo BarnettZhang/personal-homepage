@@ -1,22 +1,24 @@
 ---
 import { profile } from "../data/profile";
+import { t } from "../i18n/ui";
 
+const lang = Astro.locals.lang;
 const navItems = [
-  { href: "/", label: "首页" },
-  { href: "/about", label: "工作" },
-  { href: "/hobbies", label: "爱好" },
-  { href: "/travel", label: "旅行" },
+  { href: "/", label: t(lang, "nav.home") },
+  { href: "/about", label: t(lang, "nav.work") },
+  { href: "/hobbies", label: t(lang, "nav.hobbies") },
+  { href: "/travel", label: t(lang, "nav.travel") },
 ];
 const currentPath = Astro.url.pathname;
 ---
 
 <header class="fixed top-0 left-0 right-0 z-50 bg-cream/80 backdrop-blur-md border-b border-border/50">
-  <nav class="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
+  <nav class="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between gap-3">
     <a href="/" class="text-xl font-serif font-bold tracking-wide text-ink hover:text-sage transition-colors">
       {profile.name}
     </a>
 
-    <div class="flex items-center gap-1">
+    <div class="flex items-center gap-2 md:gap-3">
       <!-- Desktop -->
       <ul class="hidden md:flex items-center gap-1">
         {navItems.map((item) => {
@@ -51,6 +53,30 @@ const currentPath = Astro.url.pathname;
           <path stroke-linecap="round" stroke-linejoin="round" d="M21.752 15.002A9.718 9.718 0 0118 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 003 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 009.002-5.998z" />
         </svg>
       </button>
+
+      <!-- 语言切换 -->
+      <div
+        class="flex items-center rounded-full border border-border overflow-hidden shrink-0"
+        role="group"
+        aria-label="Language"
+      >
+        <button
+          data-lang="zh"
+          class={`px-2.5 py-1 text-xs font-medium transition-colors cursor-pointer ${
+            lang === "zh" ? "bg-sage-subtle text-sage" : "text-ink-muted hover:text-ink"
+          }`}
+        >
+          中
+        </button>
+        <button
+          data-lang="en"
+          class={`px-2.5 py-1 text-xs font-medium transition-colors cursor-pointer ${
+            lang === "en" ? "bg-sage-subtle text-sage" : "text-ink-muted hover:text-ink"
+          }`}
+        >
+          EN
+        </button>
+      </div>
 
       <!-- Mobile -->
       <button
@@ -124,4 +150,12 @@ const currentPath = Astro.url.pathname;
       applyTheme(rootEl.classList.contains("dark") ? "light" : "dark", true);
     });
   }
+
+  // 语言切换：写入 cookie 后刷新，由 middleware 解析
+  document.querySelectorAll("[data-lang]").forEach((el) => {
+    el.addEventListener("click", () => {
+      document.cookie = `lang=${el.getAttribute("data-lang")}; path=/; max-age=31536000; samesite=lax`;
+      location.reload();
+    });
+  });
 </script>

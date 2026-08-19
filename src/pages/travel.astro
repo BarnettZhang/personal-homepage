@@ -3,26 +3,29 @@ import Layout from "../layouts/Layout.astro";
 import TravelGlobeWrapper from "../components/TravelGlobeWrapper";
 import ScrollReveal from "../components/ScrollReveal";
 import { travelCities } from "../data/profile";
+import { t } from "../i18n/ui";
+
+const lang = Astro.locals.lang;
 ---
 
-<Layout title="旅行">
+<Layout title={t(lang, "travel.title")}>
   <!-- 地球区域 -->
   <section class="relative pt-24 pb-8 px-6 bg-[#080c14]">
     <div class="max-w-6xl mx-auto text-center">
       <ScrollReveal client:load>
         <p class="text-xs tracking-widest uppercase text-slate-400 mb-4">Travel</p>
         <h1 class="text-4xl md:text-5xl font-serif font-bold text-white mb-3">
-          走过的城市
+          {t(lang, "travel.title")}
         </h1>
         <p class="text-slate-300 leading-relaxed max-w-lg mx-auto mb-8">
-          用脚步丈量世界，用镜头记录旅程。
+          {t(lang, "travel.subtitle")}
         </p>
       </ScrollReveal>
     </div>
 
     <!-- 3D 地球 -->
     <div class="max-w-4xl mx-auto h-[580px] md:h-[680px] relative">
-      <TravelGlobeWrapper client:load cities={travelCities} />
+      <TravelGlobeWrapper client:load cities={travelCities} lang={lang} />
     </div>
   </section>
 
@@ -45,18 +48,18 @@ import { travelCities } from "../data/profile";
               <span class="text-3xl">{city.emoji}</span>
               <div>
                 <h3 class="text-lg font-serif font-semibold text-ink group-hover:text-sage transition-colors">
-                  {city.city}
+                  {city.city[lang]}
                 </h3>
                 <p class="text-xs text-ink-muted">
-                  {city.country} · {city.year}
+                  {city.country[lang]} · {city.year}
                 </p>
               </div>
             </div>
             <p class="text-sm text-ink-light leading-relaxed">
-              {city.description}
+              {city.description[lang]}
             </p>
             <span class="text-xs text-sage mt-auto opacity-0 group-hover:opacity-100 transition-opacity">
-              查看详情 →
+              {t(lang, "travel.viewDetails")}
             </span>
           </a>
         ))}

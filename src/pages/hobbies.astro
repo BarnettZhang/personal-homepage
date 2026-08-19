@@ -3,19 +3,22 @@ import Layout from "../layouts/Layout.astro";
 import GameGallery from "../components/GameGallery";
 import ScrollReveal from "../components/ScrollReveal";
 import { games } from "../data/profile";
+import { t } from "../i18n/ui";
 import steamGames from "../data/steam-games.json";
+
+const lang = Astro.locals.lang;
 ---
 
-<Layout title="兴趣爱好">
+<Layout title={t(lang, "hobbies.title")}>
   <section class="pt-32 pb-10 px-6">
     <div class="max-w-3xl mx-auto text-center">
       <ScrollReveal client:load>
         <p class="text-xs tracking-widest uppercase text-ink-muted mb-4">Life</p>
         <h1 class="text-4xl md:text-5xl font-serif font-bold text-ink mb-5">
-          兴趣爱好
+          {t(lang, "hobbies.title")}
         </h1>
         <p class="text-ink-light leading-relaxed max-w-lg mx-auto">
-          代码之外，这些是我热爱的事物。
+          {t(lang, "hobbies.subtitle")}
         </p>
       </ScrollReveal>
     </div>
@@ -26,9 +29,9 @@ import steamGames from "../data/steam-games.json";
     <div class="max-w-5xl mx-auto">
       <ScrollReveal client:load>
         <p class="text-xs tracking-widest uppercase text-ink-muted text-center mb-2">Games</p>
-        <h2 class="text-3xl font-serif font-bold text-ink mb-14 text-center">玩过的游戏</h2>
+        <h2 class="text-3xl font-serif font-bold text-ink mb-14 text-center">{t(lang, "hobbies.gamesTitle")}</h2>
       </ScrollReveal>
-      <GameGallery client:load games={games} steamData={steamGames} />
+      <GameGallery client:load games={games} steamData={steamGames} lang={lang} />
     </div>
   </section>
 </Layout>

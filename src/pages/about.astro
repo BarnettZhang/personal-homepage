@@ -4,35 +4,34 @@ import ScrollReveal from "../components/ScrollReveal";
 import SkillTags from "../components/SkillTags";
 import {
   workExperience,
+  workHighlights,
   projectHighlights,
   skillCategories,
 } from "../data/profile";
+import { t } from "../i18n/ui";
+
+const lang = Astro.locals.lang;
 
 // 拆出工作详情要点
-const workHighlights = [
-  "主导智能企业助手、智控平台等核心系统前端开发，支撑超过 2 万名内部用户使用",
-  "负责复杂交互场景的前端实现与体验优化，覆盖流式输出、富文本编辑、工作流配置、可视化面板等方向",
-  "负责前端工程化与组件化建设，搭建可复用组件能力并推动开发规范统一",
-  "推动超过 20 个功能模块从需求澄清、方案设计到开发上线的完整落地",
-  "组织代码评审和技术讨论，参与外包团队技术面试与考核",
-];
-
-const education = workExperience.filter(
-  (item) => item.title.includes("硕士") || item.title.includes("本科")
-);
+const highlights = workHighlights.map((h) => h[lang]);
+const education = workExperience.filter((item) => item.type === "education");
+const skillGroups = skillCategories.map((group) => ({
+  category: group.category[lang],
+  items: group.items,
+}));
 ---
 
-<Layout title="工作">
+<Layout title={t(lang, "about.title")}>
   <!-- 页头 -->
   <section class="pt-32 pb-16 px-6">
     <div class="max-w-3xl mx-auto text-center">
       <ScrollReveal client:load>
         <p class="text-xs tracking-widest uppercase text-ink-muted mb-4">Work</p>
         <h1 class="text-4xl md:text-5xl font-serif font-bold text-ink mb-5">
-          工作
+          {t(lang, "about.title")}
         </h1>
         <p class="text-ink-light leading-relaxed max-w-lg mx-auto">
-          B 端平台 & AI 应用前端开发，持续交付高质量产品。
+          {t(lang, "about.subtitle")}
         </p>
       </ScrollReveal>
     </div>
@@ -48,19 +47,19 @@ const education = workExperience.filter(
         <div class="card p-8 md:p-10 mb-5">
           <div class="flex items-center gap-3 mb-1.5">
             <span class="text-xs font-mono text-sage tracking-wide">
-              {workExperience[0].year}
+              {workExperience[0].year[lang]}
             </span>
           </div>
           <h2 class="text-xl font-serif font-semibold text-ink mb-1">
-            {workExperience[0].title}
+            {workExperience[0].title[lang]}
           </h2>
           <p class="text-sm text-ink-muted mb-6">
-            {workExperience[0].company}
+            {workExperience[0].company?.[lang]}
           </p>
 
           {/* 工作要点 */}
           <ul class="space-y-3">
-            {workHighlights.map((h) => (
+            {highlights.map((h) => (
               <li class="flex items-start gap-2.5 text-sm text-ink-light leading-relaxed">
                 <span class="mt-1.5 w-1.5 h-1.5 rounded-full bg-sage shrink-0" />
                 <span>{h}</span>
@@ -76,10 +75,10 @@ const education = workExperience.filter(
               <span class="text-2xl shrink-0">🎓</span>
               <div>
                 <p class="text-sm font-medium text-ink">
-                  {edu.title}
+                  {edu.title[lang]}
                 </p>
                 <p class="text-xs text-ink-muted">
-                  {edu.company} · {edu.year}
+                  {edu.company?.[lang]} · {edu.year[lang]}
                 </p>
               </div>
             </div>
@@ -102,15 +101,15 @@ const education = workExperience.filter(
                 <span class="text-2xl shrink-0 mt-0.5">{proj.emoji}</span>
                 <div class="flex-1 min-w-0">
                   <h3 class="text-lg font-serif font-semibold text-ink mb-1">
-                    {proj.name}
+                    {proj.name[lang]}
                   </h3>
-                  <p class="text-xs text-ink-muted mb-3">{proj.role}</p>
+                  <p class="text-xs text-ink-muted mb-3">{proj.role[lang]}</p>
                   <p class="text-sm text-ink-light leading-relaxed mb-4">
-                    {proj.description}
+                    {proj.description[lang]}
                   </p>
                   <div class="flex flex-wrap gap-2">
-                    {proj.tech.map((t) => (
-                      <span class="tag">{t}</span>
+                    {proj.tech.map((tech) => (
+                      <span class="tag">{tech}</span>
                     ))}
                   </div>
                 </div>
@@ -129,7 +128,7 @@ const education = workExperience.filter(
         <p class="text-xs tracking-widest uppercase text-ink-muted text-center mb-10">Skills</p>
 
         <div class="card p-8 md:p-10">
-          <SkillTags client:load categories={skillCategories} />
+          <SkillTags client:load categories={skillGroups} />
         </div>
       </ScrollReveal>
     </div>

@@ -7,6 +7,8 @@ import node from '@astrojs/node';
 
 // https://astro.build/config
 export default defineConfig({
+  // 服务端渲染，让 middleware 能根据每个请求的 cookie 解析语言
+  output: "server",
   adapter: node({ mode: "standalone" }),
   integrations: [react()],
 
