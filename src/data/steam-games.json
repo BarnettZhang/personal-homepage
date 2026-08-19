@@ -5,15 +5,15 @@
     "profileUrl": "https://steamcommunity.com/id/barnettz/"
   },
   "totalGames": 324,
-  "totalPlaytimeHours": 5653.4,
+  "totalPlaytimeHours": 5681.9,
   "games": [
     {
       "appId": 250900,
       "name": "The Binding of Isaac: Rebirth",
-      "playtimeMinutes": 15811,
-      "playtimeHours": 263.5,
-      "lastPlayed": 1785853233,
-      "recentPlaytime": 2259
+      "playtimeMinutes": 17518,
+      "playtimeHours": 292,
+      "lastPlayed": 1787073189,
+      "recentPlaytime": 1582
     },
     {
       "appId": 2868840,
@@ -110,5 +110,5 @@
     "1687950",
     "1086940"
   ],
-  "fetchedAt": "2026-08-05T00:00:00.000Z"
+  "fetchedAt": "2026-08-19T15:50:32.003Z"
 }
