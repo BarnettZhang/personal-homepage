@@ -10,8 +10,14 @@ import { execSync } from "node:child_process";
 
 // ── 加载 .env ──────────────────────────────────────────────
 function loadEnv(): void {
+  // .env 已被 gitignore；本地从文件读取，CI/Vercel 上由平台注入环境变量
   const envPath = resolve(import.meta.dirname, "..", ".env");
-  const content = readFileSync(envPath, "utf-8");
+  let content: string;
+  try {
+    content = readFileSync(envPath, "utf-8");
+  } catch {
+    return;
+  }
   for (const line of content.split("\n")) {
     const trimmed = line.trim();
     if (!trimmed || trimmed.startsWith("#")) continue;
@@ -89,8 +95,10 @@ function main() {
   const steamId = process.env.STEAM_ID;
 
   if (!apiKey || !steamId) {
-    console.error("Missing STEAM_API_KEY or STEAM_ID in .env");
-    process.exit(1);
+    console.warn(
+      "Missing STEAM_API_KEY or STEAM_ID — skipping fetch, keeping committed src/data/steam-games.json"
+    );
+    process.exit(0);
   }
 
   console.log("Fetching Steam data...");
