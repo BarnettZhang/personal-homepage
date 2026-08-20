@@ -20,7 +20,7 @@
 | 3D 可视化 | Three.js、@react-three/fiber、drei、postprocessing |
 | 动效 | GSAP、ScrollReveal |
 | 视频 | hls.js（预告片 HLS 流播放） |
-| 部署 | @astrojs/node（standalone） |
+| 部署 | @astrojs/vercel（SSR serverless） |
 
 ## 快速开始
 
@@ -94,4 +94,4 @@ STEAM_ID=你的Steam64位ID
 
 ## 部署
 
-构建产物为 Node.js standalone 服务（`dist/`），可配合 `pm2`、Docker 或 Nginx 反向代理部署到任意 Node 环境。
+使用 Vercel 部署：项目根目录直接导入即可，Vercel 会自动识别 Astro 并执行 `astro build`。SSR 产物由 `@astrojs/vercel` 适配器生成 serverless 函数，无需配置入口文件。若未配置 Steam 环境变量，`fetch-steam.ts` 会自动跳过拉取，不影响构建。

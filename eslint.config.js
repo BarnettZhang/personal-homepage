@@ -9,6 +9,7 @@ export default [
       'dist/**',
       'node_modules/**',
       '.astro/**',
+      '.vercel/**',
       'public/**',
       'src/assets/**',
       'src/data/steam-games.json',
