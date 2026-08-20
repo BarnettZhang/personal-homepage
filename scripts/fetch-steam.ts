@@ -29,39 +29,39 @@ function loadEnv(): void {
   }
 }
 
-type SteamOwnedGame = {
+interface SteamOwnedGame {
   appid: number;
   name: string;
   playtime_forever: number;
   playtime_2weeks?: number;
   img_icon_url: string;
   rtime_last_played: number;
-};
+}
 
-type SteamRecentGame = {
+interface SteamRecentGame {
   appid: number;
   name: string;
   playtime_2weeks: number;
   playtime_forever: number;
   img_icon_url: string;
-};
+}
 
-type SteamPlayer = {
+interface SteamPlayer {
   personaname: string;
   avatarfull: string;
   profileurl: string;
-};
+}
 
-type OutputGame = {
+interface OutputGame {
   appId: number;
   name: string;
   playtimeMinutes: number;
   playtimeHours: number;
   lastPlayed: number;
   recentPlaytime: number;
-};
+}
 
-type Output = {
+interface Output {
   player: {
     name: string;
     avatar: string;
@@ -72,7 +72,7 @@ type Output = {
   games: OutputGame[];
   featuredAppIds: string[];
   fetchedAt: string;
-};
+}
 
 function fetchSteam<T>(path: string, params: Record<string, string>): T {
   const url = new URL(path, "https://api.steampowered.com");
@@ -124,7 +124,7 @@ function main() {
   console.log(`  Owned: ${gamesRes.response.game_count} games`);
 
   // 3. 最近游玩
-  let recentPlaytimes = new Map<number, number>();
+  const recentPlaytimes = new Map<number, number>();
   try {
     const recentRes = fetchSteam<{
       response: { games: SteamRecentGame[] };

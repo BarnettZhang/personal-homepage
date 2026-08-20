@@ -48,7 +48,10 @@ export const workExperience: WorkExperienceItem[] = [
   {
     year: { zh: "2023.03 — 至今", en: "2023.03 — Present" },
     title: { zh: "Web 前端开发工程师", en: "Web Frontend Engineer" },
-    company: { zh: "中信银行总行软件开发中心", en: "Software Development Center, China CITIC Bank" },
+    company: {
+      zh: "中信银行总行软件开发中心",
+      en: "Software Development Center, China CITIC Bank",
+    },
     description: {
       zh: "主导智能企业助手、智控平台等核心系统的前端开发，交付深度研究、过程管理、富文本知识库等复杂功能模块，支撑超过 2 万名内部用户使用。负责前端工程化与组件化建设，推动超过 20 个功能模块从需求到上线的完整落地。组织代码评审和技术讨论，参与外包团队技术面试与考核。",
       en: "Lead frontend development for core systems including the Intelligent Enterprise Assistant and Smart Control Platform, delivering complex modules such as deep research, process management, and rich-text knowledge bases for over 20,000 internal users. Own frontend engineering and componentization, driving 20+ modules from requirements to launch. Organize code reviews and technical discussions, and participate in vendor team interviews and assessments.",
@@ -67,7 +70,7 @@ export const workExperience: WorkExperienceItem[] = [
   },
   {
     year: { zh: "2017.09 — 2022.06", en: "2017.09 — 2022.06" },
-    title: { zh: "生物医学工程 本科", en: "BEng Biomedical Engineering" },
+    title: { zh: "生物医学工程 本科", en: "MEng Biomedical Engineering" },
     company: { zh: "伦敦大学学院", en: "University College London" },
     description: {
       zh: "一等荣誉学位。四年制本硕连读项目，培养了跨学科的工程思维与问题解决能力。为后续转行计算机科学打下了扎实的数理基础。",
@@ -307,11 +310,7 @@ export const travelCities: TravelCity[] = [
           en: "A late-Ottoman waterfront palace where Baroque meets Neoclassical on the shores of the Bosphorus. Its ornate clock tower, gilded imperial gate, and elegant swan fountain in the garden tell of an empire's final opulence and romance.",
         },
         highlight: true,
-        photos: [
-          "/istanbul/IMG_0761.jpg",
-          "/istanbul/IMG_E0762.jpg",
-          "/istanbul/IMG_E0765.jpg",
-        ],
+        photos: ["/istanbul/IMG_0761.jpg", "/istanbul/IMG_E0762.jpg", "/istanbul/IMG_E0765.jpg"],
       },
     ],
     photos: [
@@ -575,11 +574,7 @@ export const travelCities: TravelCity[] = [
           en: "From Top of the Rock, the Empire State Building rises like a silver needle into the blue, ringed by a dense forest of glass and steel. Looking back from a Hudson River ferry, One World Trade Center stands proud under an overcast sky as a white ferry cuts through the grey-blue water.",
         },
         highlight: true,
-        photos: [
-          "/new-york/IMG_1997.jpg",
-          "/new-york/IMG_2008.jpg",
-          "/new-york/IMG_2072.jpg",
-        ],
+        photos: ["/new-york/IMG_1997.jpg", "/new-york/IMG_2008.jpg", "/new-york/IMG_2072.jpg"],
       },
       {
         name: { zh: "自由女神像", en: "Statue of Liberty" },
@@ -621,11 +616,7 @@ export const travelCities: TravelCity[] = [
           en: "No matter how many times you visit, the moment the tower sparkles on the hour takes your breath away. Go up at dusk — you get daytime Paris and nighttime Paris in a single visit.",
         },
         highlight: true,
-        photos: [
-          "/paris/IMG_1636.jpg",
-          "/paris/IMG_1637.jpg",
-          "/paris/IMG_1669.jpg",
-        ],
+        photos: ["/paris/IMG_1636.jpg", "/paris/IMG_1637.jpg", "/paris/IMG_1669.jpg"],
       },
       {
         name: { zh: "卢浮宫", en: "The Louvre" },
@@ -650,11 +641,7 @@ export const travelCities: TravelCity[] = [
           en: "An evening stroll along the river, from Notre-Dame to the Pont Alexandre III. Tour boats glide past and people on the bridges wave hello — Parisian romance needs no reason.",
         },
         highlight: true,
-        photos: [
-          "/paris/IMG_1642.jpg",
-          "/paris/IMG_1706.jpg",
-          "/paris/IMG_1737.jpg",
-        ],
+        photos: ["/paris/IMG_1642.jpg", "/paris/IMG_1706.jpg", "/paris/IMG_1737.jpg"],
       },
       {
         name: { zh: "巴黎圣母院", en: "Notre-Dame" },

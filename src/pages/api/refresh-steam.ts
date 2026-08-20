@@ -59,7 +59,7 @@ export async function GET() {
 
     const player = playerRes.response.players[0];
 
-    let recentPlaytimes = new Map<number, number>();
+    const recentPlaytimes = new Map<number, number>();
     try {
       const recentRes = await steamFetch<{ response: { games: SteamRecentRaw[] } }>(
         "/IPlayerService/GetRecentlyPlayedGames/v1/", { steamid: steamId, count: "100" }

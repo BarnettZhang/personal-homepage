@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect, useCallback } from "react";
+import type Hls from "hls.js";
 import type { Game } from "../data/profile";
 import type { Locale } from "../i18n/types";
 import { t, tf } from "../i18n/ui";
@@ -75,7 +76,7 @@ function VideoModal({
   onClose: () => void;
 }) {
   const videoRef = useRef<HTMLVideoElement>(null);
-  const hlsRef = useRef<any>(null);
+  const hlsRef = useRef<Hls>(null);
   const [loaded, setLoaded] = useState(false);
 
   // ESC 关闭
@@ -110,7 +111,7 @@ function VideoModal({
       hls.attachMedia(videoRef.current);
       hls.on(Hls.Events.MANIFEST_PARSED, () => {
         setLoaded(true);
-        videoRef.current?.play().catch(() => {});
+        videoRef.current?.play().catch(() => undefined);
       });
     });
 
@@ -224,7 +225,7 @@ function GameCard({ game, index, lang }: { game: Game; index: number; lang: Loca
   const [videoReady, setVideoReady] = useState(false);
   const [hlsReady, setHlsReady] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
-  const hlsRef = useRef<any>(null);
+  const hlsRef = useRef<Hls>(null);
   const hoverTimer = useRef<ReturnType<typeof setTimeout>>();
 
   // ── 初始化 HLS，视频始终挂载 ──
@@ -261,7 +262,7 @@ function GameCard({ game, index, lang }: { game: Game; index: number; lang: Loca
     const v = videoRef.current;
     if (!v || !hlsReady) return;
     v.currentTime = 0;
-    v.play().catch(() => {});
+    v.play().catch(() => undefined);
   }, [hlsReady]);
 
   const pauseVideo = useCallback(() => {

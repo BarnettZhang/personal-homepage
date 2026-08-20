@@ -11,7 +11,9 @@
     "prebuild": "npx tsx scripts/fetch-steam.ts",
     "preview": "astro preview",
     "astro": "astro",
-    "fetch-steam": "npx tsx scripts/fetch-steam.ts"
+    "fetch-steam": "npx tsx scripts/fetch-steam.ts",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix"
   },
   "dependencies": {
     "@astrojs/node": "^11.0.3",
@@ -33,10 +35,12 @@
     "three": "^0.185.1"
   },
   "devDependencies": {
+    "@eslint/js": "^10.0.1",
     "@types/three": "^0.185.1",
     "@typescript-eslint/eslint-plugin": "^8.65.0",
     "@typescript-eslint/parser": "^8.65.0",
     "eslint": "^10.8.0",
+    "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-astro": "^3.0.1",
     "prettier": "^3.9.6",
     "prettier-plugin-astro": "^0.14.1",

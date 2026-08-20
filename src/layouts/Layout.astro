@@ -27,12 +27,12 @@ const defaultDescription = t(lang, "layout.defaultDescription");
     <script is:inline>
       (function () {
         try {
-          var stored = localStorage.getItem("theme");
-          var prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+          const stored = localStorage.getItem("theme");
+          const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
           if (stored === "dark" || (!stored && prefersDark)) {
             document.documentElement.classList.add("dark");
           }
-        } catch (e) {}
+        } catch {}
       })();
     </script>
 
@@ -41,11 +41,11 @@ const defaultDescription = t(lang, "layout.defaultDescription");
       (function () {
         try {
           if (/(?:^|;\s*)lang=/.test(document.cookie)) return;
-          var nav = (navigator.language || (navigator.languages && navigator.languages[0]) || "zh").toLowerCase();
-          var lang = nav.indexOf("zh") === 0 ? "zh" : "en";
+          const nav = (navigator.language || (navigator.languages && navigator.languages[0]) || "zh").toLowerCase();
+          const lang = nav.indexOf("zh") === 0 ? "zh" : "en";
           document.cookie = "lang=" + lang + "; path=/; max-age=31536000; samesite=lax";
           location.reload();
-        } catch (e) {}
+        } catch {}
       })();
     </script>
 

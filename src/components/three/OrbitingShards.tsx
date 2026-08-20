@@ -85,13 +85,13 @@ export default function FloatingShapes() {
   const groupRef = useRef<THREE.Group>(null);
 
   const shapes = useMemo(() => {
-    const items: Array<{
+    const items: {
       position: [number, number, number];
       size: number;
       color: string;
       rotationSpeed: number;
       floatOffset: number;
-    }> = [];
+    }[] = [];
     const palette = [
       "#e8d5c4", // 米白
       "#dcc9bc", // 浅玫瑰
