@@ -1,7 +1,5 @@
 ---
-import { getCollection } from "astro:content";
 import Layout from "../layouts/Layout.astro";
-import HobbyGrid from "../components/HobbyGrid";
 import GameGallery from "../components/GameGallery";
 import ScrollReveal from "../components/ScrollReveal";
 import { games } from "../data/profile";
@@ -9,15 +7,6 @@ import { t } from "../i18n/ui";
 import steamGames from "../data/steam-games.json";
 
 const lang = Astro.locals.lang;
-const hobbies = await getCollection("hobbies");
-const sortedHobbies = hobbies
-  .sort((a, b) => a.data.order - b.data.order)
-  .map((h) => ({
-    title: h.data.title[lang],
-    description: h.data.description[lang],
-    tags: h.data.tags.map((tag) => tag[lang]),
-    icon: h.data.icon,
-  }));
 ---
 
 <Layout title={t(lang, "hobbies.title")}>
@@ -32,13 +21,6 @@ const sortedHobbies = hobbies
           {t(lang, "hobbies.subtitle")}
         </p>
       </ScrollReveal>
-    </div>
-  </section>
-
-  <!-- 爱好卡片 -->
-  <section class="pb-16 px-6">
-    <div class="max-w-5xl mx-auto">
-      <HobbyGrid client:load hobbies={sortedHobbies} />
     </div>
   </section>
 

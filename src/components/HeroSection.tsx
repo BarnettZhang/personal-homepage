@@ -28,7 +28,7 @@ export default function HeroSection({ name, tagline, description }: HeroSectionP
     <div className="relative z-10 flex flex-col items-center justify-center h-screen px-6 text-center pointer-events-none">
       {/* 柔光装饰 */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[350px] rounded-full blur-3xl opacity-30"
-           style={{ background: "radial-gradient(ellipse, #e8efe4 0%, #f5ede8 40%, transparent 70%)" }} />
+           style={{ background: "radial-gradient(ellipse, var(--sage-subtle) 0%, var(--rose-subtle) 40%, transparent 70%)" }} />
 
       <h1 className="text-5xl md:text-7xl lg:text-8xl font-serif font-bold tracking-tight mb-6 text-ink">
         {name}

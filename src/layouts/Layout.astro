@@ -19,20 +19,33 @@ const defaultDescription = t(lang, "layout.defaultDescription");
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="theme-color" content="#faf8f5" />
+    <meta name="theme-color" id="theme-color-meta" content="#faf8f5" />
     <meta name="description" content={description || defaultDescription} />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+    <!-- 主题引导：首帧渲染前恢复用户偏好，避免闪烁 -->
+    <script is:inline>
+      (function () {
+        try {
+          const stored = localStorage.getItem("theme");
+          const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+          if (stored === "dark" || (!stored && prefersDark)) {
+            document.documentElement.classList.add("dark");
+          }
+        } catch {}
+      })();
+    </script>
 
     <!-- 首次访问自动检测系统语言：无 cookie 时写入并刷新一次 -->
     <script is:inline>
       (function () {
         try {
           if (/(?:^|;\s*)lang=/.test(document.cookie)) return;
-          var nav = (navigator.language || (navigator.languages && navigator.languages[0]) || "zh").toLowerCase();
-          var lang = nav.indexOf("zh") === 0 ? "zh" : "en";
+          const nav = (navigator.language || (navigator.languages && navigator.languages[0]) || "zh").toLowerCase();
+          const lang = nav.indexOf("zh") === 0 ? "zh" : "en";
           document.cookie = "lang=" + lang + "; path=/; max-age=31536000; samesite=lax";
           location.reload();
-        } catch (e) {}
+        } catch {}
       })();
     </script>
 

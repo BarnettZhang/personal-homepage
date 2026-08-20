@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef, useMemo, useState, Suspense } from "react";
-import { Canvas, useFrame } from "@react-three/fiber";
+import { Canvas, useFrame, type ThreeEvent } from "@react-three/fiber";
 import { OrbitControls, Sphere, Html, useTexture } from "@react-three/drei";
 import * as THREE from "three";
 import type { TravelCity } from "../../data/profile";
@@ -167,11 +167,11 @@ function CityMarker({
   // 所有子 mesh 共享的交互事件
   const handlers = useMemo(
     () => ({
-      onClick: (e: any) => {
+      onClick: (e: ThreeEvent<MouseEvent>) => {
         e.stopPropagation();
         onClick(city);
       },
-      onPointerOver: (e: any) => {
+      onPointerOver: (e: ThreeEvent<PointerEvent>) => {
         e.stopPropagation();
         setHovered(true);
         document.body.style.cursor = "pointer";

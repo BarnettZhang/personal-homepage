@@ -10,8 +10,14 @@ import { execSync } from "node:child_process";
 
 // ── 加载 .env ──────────────────────────────────────────────
 function loadEnv(): void {
+  // .env 已被 gitignore；本地从文件读取，CI/Vercel 上由平台注入环境变量
   const envPath = resolve(import.meta.dirname, "..", ".env");
-  const content = readFileSync(envPath, "utf-8");
+  let content: string;
+  try {
+    content = readFileSync(envPath, "utf-8");
+  } catch {
+    return;
+  }
   for (const line of content.split("\n")) {
     const trimmed = line.trim();
     if (!trimmed || trimmed.startsWith("#")) continue;
@@ -23,39 +29,39 @@ function loadEnv(): void {
   }
 }
 
-type SteamOwnedGame = {
+interface SteamOwnedGame {
   appid: number;
   name: string;
   playtime_forever: number;
   playtime_2weeks?: number;
   img_icon_url: string;
   rtime_last_played: number;
-};
+}
 
-type SteamRecentGame = {
+interface SteamRecentGame {
   appid: number;
   name: string;
   playtime_2weeks: number;
   playtime_forever: number;
   img_icon_url: string;
-};
+}
 
-type SteamPlayer = {
+interface SteamPlayer {
   personaname: string;
   avatarfull: string;
   profileurl: string;
-};
+}
 
-type OutputGame = {
+interface OutputGame {
   appId: number;
   name: string;
   playtimeMinutes: number;
   playtimeHours: number;
   lastPlayed: number;
   recentPlaytime: number;
-};
+}
 
-type Output = {
+interface Output {
   player: {
     name: string;
     avatar: string;
@@ -66,7 +72,7 @@ type Output = {
   games: OutputGame[];
   featuredAppIds: string[];
   fetchedAt: string;
-};
+}
 
 function fetchSteam<T>(path: string, params: Record<string, string>): T {
   const url = new URL(path, "https://api.steampowered.com");
@@ -89,8 +95,10 @@ function main() {
   const steamId = process.env.STEAM_ID;
 
   if (!apiKey || !steamId) {
-    console.error("Missing STEAM_API_KEY or STEAM_ID in .env");
-    process.exit(1);
+    console.warn(
+      "Missing STEAM_API_KEY or STEAM_ID — skipping fetch, keeping committed src/data/steam-games.json"
+    );
+    process.exit(0);
   }
 
   console.log("Fetching Steam data...");
@@ -116,7 +124,7 @@ function main() {
   console.log(`  Owned: ${gamesRes.response.game_count} games`);
 
   // 3. 最近游玩
-  let recentPlaytimes = new Map<number, number>();
+  const recentPlaytimes = new Map<number, number>();
   try {
     const recentRes = fetchSteam<{
       response: { games: SteamRecentGame[] };
