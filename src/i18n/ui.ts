@@ -12,12 +12,12 @@ export const ui: Record<string, LocalizedString> = {
 
   // ── Layout / Footer ──
   "layout.defaultTitle": {
-    zh: "张同学 — 前端开发 & 创意工程师",
-    en: "Zhang — Frontend Developer & Creative Coder",
+    zh: "Barnett Zhang — 前端开发 & 创意工程师",
+    en: "Barnett Zhang — Frontend Developer & Creative Coder",
   },
   "layout.defaultDescription": {
-    zh: "张同学的个人主页 — 前端开发者 · 热爱技术与生活",
-    en: "Zhang's personal homepage — Frontend developer · passionate about technology and life",
+    zh: "Barnett Zhang 的个人主页 — 前端开发者 · 热爱技术与生活",
+    en: "Barnett Zhang's personal homepage — Frontend developer · passionate about technology and life",
   },
   "footer.builtWith": { zh: "用热爱构建", en: "Built with passion" },
   "footer.crafted": {

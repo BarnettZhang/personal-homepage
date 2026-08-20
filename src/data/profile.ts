@@ -5,7 +5,7 @@
 import type { LocalizedString } from "../i18n/types";
 
 export const profile = {
-  name: "ZZP",
+  name: "Barnett Zhang",
   tagline: {
     zh: "B 端平台 & AI 应用前端开发。",
     en: "Frontend developer for B2B platforms & AI applications.",
