@@ -5,6 +5,7 @@ import * as THREE from "three";
 import ArtisticCore from "./VortexCore";
 import FloatingShapes from "./OrbitingShards";
 import GentleParticles from "./ParticleStream";
+import FoxModel from "./FoxModel";
 
 // ── 相机微动：鼠标轻柔跟随 ──
 function SceneCamera() {
@@ -40,6 +41,7 @@ function Scene() {
       <ArtisticCore />
       <FloatingShapes />
       <GentleParticles />
+      <FoxModel />
 
       <EffectComposer>
         <Vignette offset={0.15} darkness={0.3} />
