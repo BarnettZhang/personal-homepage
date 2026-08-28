@@ -1,8 +1,10 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import GameGallery from "../components/GameGallery";
+import AnimeGallery from "../components/AnimeGallery";
+import SectionNav from "../components/SectionNav";
 import ScrollReveal from "../components/ScrollReveal";
-import { games } from "../data/profile";
+import { games, anime } from "../data/profile";
 import { t } from "../i18n/ui";
 import steamGames from "../data/steam-games.json";
 
@@ -24,14 +26,28 @@ const lang = Astro.locals.lang;
     </div>
   </section>
 
+  <!-- 悬浮目录 -->
+  <SectionNav client:load lang={lang} />
+
   <!-- 游戏 -->
-  <section class="pb-24 px-6">
+  <section id="games" class="pb-24 px-6 scroll-mt-24">
     <div class="max-w-5xl mx-auto">
       <ScrollReveal client:load>
         <p class="text-xs tracking-widest uppercase text-ink-muted text-center mb-2">Games</p>
         <h2 class="text-3xl font-serif font-bold text-ink mb-14 text-center">{t(lang, "hobbies.gamesTitle")}</h2>
       </ScrollReveal>
       <GameGallery client:load games={games} steamData={steamGames} lang={lang} />
+    </div>
+  </section>
+
+  <!-- 动漫 -->
+  <section id="anime" class="pb-24 px-6 scroll-mt-24">
+    <div class="max-w-5xl mx-auto">
+      <ScrollReveal client:load>
+        <p class="text-xs tracking-widest uppercase text-ink-muted text-center mb-2">Anime</p>
+        <h2 class="text-3xl font-serif font-bold text-ink mb-14 text-center">{t(lang, "hobbies.animeTitle")}</h2>
+      </ScrollReveal>
+      <AnimeGallery client:load anime={anime} lang={lang} />
     </div>
   </section>
 </Layout>

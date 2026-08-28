@@ -735,6 +735,81 @@ export const games: Game[] = [
 ];
 
 // -----------------------------------------------------------
+//  看过的动漫
+// -----------------------------------------------------------
+export interface Anime {
+  name: LocalizedString;
+  /** 日文原名，用作卡片眉题 */
+  original: string;
+  genre: LocalizedString;
+  /** 一句话简介 */
+  description: LocalizedString;
+  /** 主题色 */
+  accentColor: string;
+  /** 封面海报（本地路径） */
+  coverUrl: string;
+  /** 横幅场景图，hover 时淡入 */
+  bannerUrl: string;
+  /** Bangumi 条目链接 */
+  bangumiUrl: string;
+}
+
+export const anime: Anime[] = [
+  {
+    name: { zh: "轻音少女", en: "K-ON!" },
+    original: "けいおん！",
+    genre: { zh: "日常 / 音乐 / 校园", en: "Slice of Life / Music / School" },
+    description: {
+      zh: "放学后的红茶与轻音部，京阿尼把最美好的青春日常，泡进了这一杯温热里。",
+      en: "After-school tea and a light-music club — Kyoto Animation brewed the sweetest youth into one warm cup.",
+    },
+    accentColor: "#FF9EC5",
+    coverUrl: "/anime/k-on-cover.png",
+    bannerUrl: "/anime/k-on-banner.jpg",
+    bangumiUrl: "https://bgm.tv/subject/1424",
+  },
+  {
+    name: { zh: "红辣椒", en: "Paprika" },
+    original: "パプリカ",
+    genre: { zh: "科幻 / 悬疑 / 剧场版", en: "Sci-Fi / Mystery / Movie" },
+    description: {
+      zh: "今敏用一场盛大的梦境游行，把现实与幻想缝在一起，留下无尽的想象力。",
+      en: "Satoshi Kon stitches reality and dream into one dizzying parade of pure imagination.",
+    },
+    accentColor: "#FF7B72",
+    coverUrl: "/anime/paprika-cover.png",
+    bannerUrl: "/anime/paprika-banner.jpg",
+    bangumiUrl: "https://bgm.tv/subject/841",
+  },
+  {
+    name: { zh: "JOJO的奇妙冒险", en: "JoJo's Bizarre Adventure" },
+    original: "ジョジョの奇妙な冒険",
+    genre: { zh: "热血 / 战斗 / 奇幻", en: "Action / Battle / Fantasy" },
+    description: {
+      zh: "「人类的赞歌就是勇气的赞歌」，黄金精神在两百年间、跨越世代代代相传。",
+      en: "'The praise of man is the praise of courage' — the Golden Spirit endures across generations.",
+    },
+    accentColor: "#E8B54B",
+    coverUrl: "/anime/jojo-cover.jpg",
+    bannerUrl: "/anime/jojo-banner.jpg",
+    bangumiUrl: "https://bgm.tv/subject/43558",
+  },
+  {
+    name: { zh: "日常", en: "Nichijou" },
+    original: "にちじょう",
+    genre: { zh: "搞笑 / 日常 / 电波", en: "Comedy / Slice of Life / Surreal" },
+    description: {
+      zh: "「我们度过的每个平凡日常，也许就是连续发生的奇迹。」荒诞又温情的电波喜剧。",
+      en: "'Every ordinary day we live might be a string of miracles' — an absurd yet tender comedy.",
+    },
+    accentColor: "#9BD1FF",
+    coverUrl: "/anime/nichijou-cover.png",
+    bannerUrl: "/anime/nichijou-banner.jpg",
+    bangumiUrl: "https://bgm.tv/subject/9912",
+  },
+];
+
+// -----------------------------------------------------------
 //  社交链接
 // -----------------------------------------------------------
 export interface SocialLink {

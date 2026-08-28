@@ -46,6 +46,13 @@ export const ui: Record<string, LocalizedString> = {
     en: "Beyond code, these are the things I love.",
   },
   "hobbies.gamesTitle": { zh: "玩过的游戏", en: "Games I've played" },
+  "hobbies.animeTitle": { zh: "喜欢的动漫", en: "Anime I love" },
+  "hobbies.navLabel": { zh: "本页目录", en: "On this page" },
+  "hobbies.navGames": { zh: "游戏", en: "Games" },
+  "hobbies.navAnime": { zh: "动漫", en: "Anime" },
+
+  // ── 动漫画廊 ──
+  "anime.bangumiHint": { zh: "↗ Bangumi 条目", en: "↗ View on Bangumi" },
 
   // ── 旅行页 ──
   "travel.title": { zh: "走过的城市", en: "Cities I've visited" },

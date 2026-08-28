@@ -29,12 +29,7 @@ export default function FoxModel() {
   });
 
   return (
-    <group
-      ref={group}
-      position={[2.4, -2.2, 0.5]}
-      rotation={[0, -Math.PI / 2, 0]}
-      scale={0.01}
-    >
+    <group ref={group} position={[2.4, -2.2, 0.5]} rotation={[0, -Math.PI / 2, 0]} scale={0.01}>
       <primitive object={scene} />
     </group>
   );
